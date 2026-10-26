@@ -1,0 +1,281 @@
+:root {
+  --bg: #eef3ef;
+  --ink: #1d2740;
+  --muted: #5a6478;
+  --chili: #d62f1f;
+  --saffron: #f2a900;
+  --card: #ffffff;
+  --line: #d5dcd6;
+}
+* {
+  box-sizing: border-box;
+  margin: 0;
+}
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 4rem;
+}
+body {
+  font-family: "Bricolage Grotesque", system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--ink);
+  line-height: 1.5;
+}
+a {
+  color: inherit;
+}
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+}
+:focus-visible {
+  outline: 3px solid var(--saffron);
+  outline-offset: 2px;
+}
+
+.top {
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.8rem 1.25rem;
+  background: var(--ink);
+  color: #fff;
+}
+.logo {
+  font-weight: 800;
+  font-size: 1.2rem;
+  text-decoration: none;
+}
+.top nav a {
+  margin-left: 1.25rem;
+  text-decoration: none;
+}
+.top nav a:hover {
+  color: var(--saffron);
+}
+
+.hero {
+  background: var(--ink);
+  color: #fff;
+  padding: 3rem 1.25rem 4rem;
+}
+.hero > * {
+  max-width: 60rem;
+  margin-inline: auto;
+}
+.hero h1 {
+  font-size: clamp(2.4rem, 8vw, 5rem);
+  font-weight: 800;
+  line-height: 1.02;
+  letter-spacing: -0.02em;
+}
+.hero p {
+  margin-top: 1rem;
+  font-size: 1.15rem;
+  color: #cdd5e6;
+}
+.hero .btn {
+  display: table;
+  margin-top: 1.75rem;
+}
+
+.btn {
+  display: inline-block;
+  padding: 0.8rem 1.6rem;
+  border-radius: 999px;
+  border: 0;
+  cursor: pointer;
+  background: var(--saffron);
+  color: var(--ink);
+  font: inherit;
+  font-weight: 600;
+  text-decoration: none;
+}
+.btn:hover {
+  background: #ffbd2e;
+}
+
+main {
+  max-width: 60rem;
+  margin: 0 auto;
+  padding: 2.5rem 1.25rem;
+}
+.state {
+  color: var(--muted);
+  text-align: center;
+  padding: 2rem 0;
+}
+.cat {
+  margin-bottom: 2.5rem;
+}
+.cat h3 {
+  font-size: 1.7rem;
+  font-weight: 800;
+  padding-bottom: 0.5rem;
+  border-bottom: 3px solid var(--chili);
+  margin-bottom: 1rem;
+}
+.items {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fill, minmax(17rem, 1fr));
+}
+.item {
+  display: flex;
+  gap: 0.9rem;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 0.75rem;
+}
+.item.off {
+  opacity: 0.5;
+}
+.thumb {
+  flex: none;
+  width: 5.5rem;
+  height: 5.5rem;
+  border-radius: 8px;
+  overflow: hidden;
+  background: #e3e9e4;
+  display: grid;
+  place-items: center;
+  font-size: 2rem;
+}
+.thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.info {
+  min-width: 0;
+  flex: 1;
+}
+.row {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.5rem;
+  font-weight: 600;
+}
+.price {
+  color: var(--chili);
+  white-space: nowrap;
+}
+.desc {
+  font-size: 0.9rem;
+  color: var(--muted);
+  margin-top: 0.2rem;
+}
+.soldout {
+  font-size: 0.8rem;
+  color: var(--chili);
+  font-weight: 600;
+}
+
+footer {
+  background: var(--ink);
+  color: #cdd5e6;
+  padding: 2.5rem 1.25rem;
+  text-align: center;
+}
+footer h2 {
+  color: #fff;
+  margin-bottom: 0.5rem;
+}
+
+/* Pop-up */
+dialog {
+  border: 0;
+  border-radius: 16px;
+  padding: 0;
+  width: min(92vw, 26rem);
+  overflow: hidden;
+  background: var(--card);
+  color: var(--ink);
+  margin: auto;
+}
+dialog::backdrop {
+  background: rgba(20, 26, 44, 0.65);
+}
+dialog[open] {
+  animation: pop 0.25s ease-out;
+}
+@keyframes pop {
+  from {
+    transform: scale(0.92);
+    opacity: 0;
+  }
+}
+.popup-img {
+  height: 13rem;
+  background: #e3e9e4;
+  display: grid;
+  place-items: center;
+  font-size: 4rem;
+}
+.popup-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.popup-body {
+  padding: 1.25rem 1.5rem 1.5rem;
+  text-align: center;
+}
+.badge {
+  display: inline-block;
+  background: var(--chili);
+  color: #fff;
+  font-size: 0.85rem;
+  font-weight: 600;
+  padding: 0.15rem 0.7rem;
+  border-radius: 999px;
+  margin-bottom: 0.6rem;
+}
+.popup-body h2 {
+  font-size: 1.7rem;
+  font-weight: 800;
+  line-height: 1.15;
+}
+.popup-body p {
+  color: var(--muted);
+  margin-top: 0.4rem;
+}
+.popup-price {
+  color: var(--chili) !important;
+  font-weight: 800;
+  font-size: 1.4rem;
+  margin-bottom: 1rem;
+}
+.close {
+  position: absolute;
+  top: 0.6rem;
+  right: 0.6rem;
+  width: 2.2rem;
+  height: 2.2rem;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.9);
+  font-size: 1.5rem;
+  line-height: 1;
+  cursor: pointer;
+  z-index: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  dialog[open] {
+    animation: none;
+  }
+}

@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Kebab Istanbul – Menu et sandwichs</title>
+    <meta
+      name="description"
+      content="Kebabs, sandwichs et menus faits maison. Découvrez notre carte et notre sandwich du moment."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <header class="top">
+      <a class="logo" href="#">Kebab Istanbul</a>
+      <nav><a href="#menu">Menu</a><a href="#infos">Infos</a></nav>
+    </header>
+
+    <section class="hero">
+      <h1>Le kebab,<br />cuit à la broche<br />devant vous.</h1>
+      <p>Viande fraîche, pain du jour, sauces maison.</p>
+      <a class="btn" href="#menu">Voir le menu</a>
+    </section>
+
+    <main id="menu">
+      <h2 class="sr-only">Notre carte</h2>
+      <div id="menu-content" aria-live="polite">
+        <p class="state">Chargement du menu…</p>
+      </div>
+    </main>
+
+    <footer id="infos">
+      <h2>Infos pratiques</h2>
+      <p>
+        12 rue Exemple, 54000 Ville<br />Tous les jours de 11h à 23h<br />Tél.
+        03 00 00 00 00
+      </p>
+    </footer>
+
+    <!-- Pop-up « Nouveau sandwich » -->
+    <dialog id="popup" aria-labelledby="popup-title">
+      <button class="close" id="popup-close" aria-label="Fermer">×</button>
+      <div class="popup-img" id="popup-img"></div>
+      <div class="popup-body">
+        <p class="badge">Le sandwich du moment</p>
+        <h2 id="popup-title"></h2>
+        <p id="popup-desc"></p>
+        <p class="popup-price" id="popup-price"></p>
+        <a class="btn" href="#menu" id="popup-cta">Voir le menu</a>
+      </div>
+    </dialog>
+
+    <script src="script.js"></script>
+  </body>
+</html>
