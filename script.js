@@ -290,9 +290,10 @@ function showPopup(rows) {
   const s = rows.find((r) => isTrue(r.actif) && r.nom);
   if (!s) return;
 
-  // Une seule fois par visite
+  // Une seule fois par visite (ajouter ?popup à l'adresse force l'affichage, pratique pour tester)
+  const force = new URLSearchParams(location.search).has("popup");
   try {
-    if (sessionStorage.getItem("popup-vu") === s.nom) return;
+    if (!force && sessionStorage.getItem("popup-vu") === s.nom) return;
   } catch (e) {}
 
   $("popup-title").textContent = s.nom;
