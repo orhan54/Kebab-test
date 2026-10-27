@@ -1,4 +1,4 @@
-# Kebab O'Delice
+# Kebab O'Delices
 
 > **Projet de démonstration (maquette).** Ce site est un exemple de site vitrine pour un restaurant de kebab. Il n'est pas le site officiel du restaurant. Il pourra être finalisé avec le client si besoin : les données, les photos et les informations pratiques sont donc susceptibles de changer.
 
