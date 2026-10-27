@@ -1,28 +1,67 @@
+/* Kebab O'Delice : thème sombre "braise", fluide du petit mobile au très grand écran.
+   Principes : unités relatives (rem), tailles fluides (clamp), grille auto-adaptative,
+   zones tactiles >= 44px, survols réservés aux appareils qui en ont, mouvements réduits respectés. */
+
 :root {
-  --bg: #eef3ef;
-  --ink: #1d2740;
-  --muted: #5a6478;
+  color-scheme: dark;
+
+  --bg: #110b09;
+  --bg-deep: #0c0705;
+  --card: #2b1f19;
+  --card-hover: #34261e;
+  --line: #4a372d;
+  --ink: #f6ece0;
+  --muted: #b9a999;
   --chili: #d62f1f;
+  --chili-soft: #ff7a63;
   --saffron: #f2a900;
-  --card: #ffffff;
-  --line: #d5dcd6;
+  --saffron-hot: #ffbd2e;
+
+  /* Marge latérale fluide : 16px sur petit mobile, jusqu'à 48px sur grand écran */
+  --gutter: clamp(1rem, 4vw, 3rem);
+  /* Largeur maximale du contenu */
+  --wrap: 84rem;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
 }
 * {
-  box-sizing: border-box;
   margin: 0;
 }
+
 html {
+  /* Échelle fluide : 16px (mobile) -> ~20px (grand écran).
+     Basée sur rem, donc la taille de police choisie par l'utilisateur dans son navigateur est respectée. */
+  font-size: clamp(1rem, 0.5vw + 0.69rem, 1.3rem);
   scroll-behavior: smooth;
-  scroll-padding-top: 4rem;
+  /* le défilement s'arrête sous la barre du haut + la barre des catégories */
+  scroll-padding-top: calc(var(--top-h, 3.5rem) + var(--nav-h, 0px) + 0.75rem);
+  background: var(--bg-deep);
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
 }
 body {
+  min-width: 20rem; /* tient jusqu'à 320px */
   font-family: "Bricolage Grotesque", system-ui, sans-serif;
   background: var(--bg);
   color: var(--ink);
   line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  overflow-wrap: break-word;
+}
+img {
+  max-width: 100%;
+  height: auto;
 }
 a {
   color: inherit;
+}
+::selection {
+  background: var(--saffron);
+  color: var(--bg-deep);
 }
 .sr-only {
   position: absolute;
@@ -30,81 +69,185 @@ a {
   height: 1px;
   overflow: hidden;
   clip: rect(0 0 0 0);
+  white-space: nowrap;
 }
 :focus-visible {
   outline: 3px solid var(--saffron);
   outline-offset: 2px;
 }
 
+/* ---------- Barre du haut ---------- */
 .top {
   position: sticky;
   top: 0;
   z-index: 5;
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-between;
   align-items: center;
-  padding: 0.8rem 1.25rem;
-  background: var(--ink);
-  color: #fff;
+  column-gap: 1rem;
+  /* max() : respecte l'encoche des téléphones en paysage */
+  padding: 0.35rem max(var(--gutter), env(safe-area-inset-right)) 0.35rem
+    max(var(--gutter), env(safe-area-inset-left));
+  background: rgba(12, 7, 5, 0.88);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--line);
 }
 .logo {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.75rem;
   font-weight: 800;
-  font-size: 1.2rem;
+  font-size: clamp(1.1rem, 0.9rem + 0.6vw, 1.45rem);
+  letter-spacing: -0.01em;
   text-decoration: none;
+  color: var(--saffron);
+}
+.top nav {
+  display: flex;
+  gap: clamp(0.25rem, 2vw, 1.5rem);
 }
 .top nav a {
-  margin-left: 1.25rem;
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.75rem; /* zone tactile >= 44px */
+  padding-inline: 0.6rem;
   text-decoration: none;
+  color: var(--muted);
+  transition: color 0.2s;
 }
 .top nav a:hover {
   color: var(--saffron);
 }
 
+/* ---------- Hero ---------- */
 .hero {
-  background: var(--ink);
-  color: #fff;
-  padding: 3rem 1.25rem 4rem;
+  color: var(--ink);
+  padding: clamp(3rem, 8vw, 7rem) max(var(--gutter), env(safe-area-inset-right))
+    clamp(3.5rem, 9vw, 8rem) max(var(--gutter), env(safe-area-inset-left));
+  background:
+    radial-gradient(
+      60rem 28rem at 88% -10%,
+      rgba(242, 169, 0, 0.38),
+      transparent 70%
+    ),
+    radial-gradient(
+      48rem 26rem at 0% 110%,
+      rgba(214, 47, 31, 0.5),
+      transparent 70%
+    ),
+    var(--bg-deep);
+  border-bottom: 1px solid var(--line);
 }
 .hero > * {
-  max-width: 60rem;
+  max-width: var(--wrap);
   margin-inline: auto;
 }
 .hero h1 {
-  font-size: clamp(2.4rem, 8vw, 5rem);
+  font-size: clamp(2.25rem, 1.2rem + 6.2vw, 6.5rem);
   font-weight: 800;
   line-height: 1.02;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.03em;
+  text-wrap: balance;
+  text-shadow: 0 4px 40px rgba(242, 169, 0, 0.25);
 }
 .hero p {
-  margin-top: 1rem;
-  font-size: 1.15rem;
-  color: #cdd5e6;
+  margin-top: 1.1rem;
+  max-width: 40rem; /* ligne courte = lecture confortable */
+  font-size: clamp(1.05rem, 0.95rem + 0.5vw, 1.5rem);
+  color: var(--muted);
 }
 .hero .btn {
   display: table;
-  margin-top: 1.75rem;
+  margin-top: 2rem;
 }
 
+/* ---------- Boutons ---------- */
 .btn {
   display: inline-block;
-  padding: 0.8rem 1.6rem;
+  min-height: 2.75rem;
+  padding: 0.8rem 1.8rem;
   border-radius: 999px;
   border: 0;
   cursor: pointer;
   background: var(--saffron);
-  color: var(--ink);
+  color: #1c1208;
   font: inherit;
-  font-weight: 600;
+  font-weight: 700;
+  text-align: center;
   text-decoration: none;
+  box-shadow: 0 6px 24px rgba(242, 169, 0, 0.25);
+  transition:
+    background 0.2s,
+    box-shadow 0.25s;
 }
 .btn:hover {
-  background: #ffbd2e;
+  background: var(--saffron-hot);
+  box-shadow: 0 8px 36px rgba(242, 169, 0, 0.55);
 }
 
+/* ---------- Barre des catégories (collante sous le header) ---------- */
+.catnav {
+  position: sticky;
+  top: var(--top-h, 3.5rem);
+  z-index: 4;
+  display: flex;
+  gap: 0.6rem;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scrollbar-width: none; /* Firefox */
+  padding: 0.6rem
+    max(
+      var(--gutter),
+      env(safe-area-inset-right),
+      calc((100% - var(--wrap)) / 2 + var(--gutter))
+    );
+  background: rgba(12, 7, 5, 0.92);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--line);
+}
+.catnav::-webkit-scrollbar {
+  display: none;
+}
+.catnav a {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.75rem; /* zone tactile >= 44px */
+  padding-inline: 1.15rem;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--card);
+  color: var(--ink);
+  font-weight: 600;
+  text-decoration: none;
+  white-space: nowrap;
+  transition:
+    background 0.2s,
+    color 0.2s,
+    border-color 0.2s;
+}
+.catnav a.on {
+  background: var(--saffron);
+  border-color: var(--saffron);
+  color: #1c1208;
+}
+
+/* ---------- Carte du menu ---------- */
 main {
-  max-width: 60rem;
+  max-width: var(--wrap);
   margin: 0 auto;
-  padding: 2.5rem 1.25rem;
+  padding: clamp(2.5rem, 5vw, 5rem)
+    max(var(--gutter), env(safe-area-inset-right)) clamp(2.5rem, 5vw, 5rem)
+    max(var(--gutter), env(safe-area-inset-left));
+  background: radial-gradient(
+      40rem 22rem at 50% 0%,
+      rgba(214, 47, 31, 0.12),
+      transparent 70%
+    )
+    no-repeat;
 }
 .state {
   color: var(--muted);
@@ -112,43 +255,72 @@ main {
   padding: 2rem 0;
 }
 .cat {
-  margin-bottom: 2.5rem;
+  margin-bottom: clamp(2.5rem, 5vw, 4.5rem);
 }
 .cat h3 {
-  font-size: 1.7rem;
+  position: relative;
+  font-size: clamp(1.6rem, 1.1rem + 1.8vw, 2.6rem);
   font-weight: 800;
-  padding-bottom: 0.5rem;
-  border-bottom: 3px solid var(--chili);
-  margin-bottom: 1rem;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  padding-bottom: 0.7rem;
+  margin-bottom: clamp(1rem, 2vw, 1.75rem);
+  border-bottom: 1px solid var(--line);
 }
+.cat h3::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -1px;
+  width: 4.5rem;
+  height: 4px;
+  background: linear-gradient(90deg, var(--chili), var(--saffron));
+  border-radius: 3px;
+}
+
+/* Grille auto-adaptative : 1 colonne sur mobile, 2 sur tablette, 3+ sur PC.
+   min(100%, 22rem) évite tout débordement sur les écrans très étroits. */
 .items {
   list-style: none;
   padding: 0;
   display: grid;
-  gap: 1rem;
-  grid-template-columns: repeat(auto-fill, minmax(17rem, 1fr));
+  gap: clamp(1rem, 2vw, 1.75rem);
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 22rem), 1fr));
 }
 .item {
   display: flex;
-  gap: 0.9rem;
+  align-items: flex-start;
+  gap: clamp(0.9rem, 1.6vw, 1.4rem);
   background: var(--card);
-  border: 1px solid var(--line);
-  border-radius: 10px;
-  padding: 0.75rem;
+  border: 1px solid var(--saffron); /* disponible : cadre jaune fixe */
+  border-radius: 1rem;
+  padding: clamp(0.85rem, 1.5vw, 1.6rem);
+  box-shadow:
+    0 0 0 1px rgba(242, 169, 0, 0.25),
+    0 8px 30px rgba(242, 169, 0, 0.15);
 }
+/* indisponible : cadre rouge fixe, contenu atténué mais mention bien lisible */
 .item.off {
-  opacity: 0.5;
+  border-color: var(--chili);
+  box-shadow:
+    0 0 0 1px rgba(214, 47, 31, 0.3),
+    0 8px 30px rgba(214, 47, 31, 0.18);
+}
+.item.off .thumb,
+.item.off .row,
+.item.off .desc {
+  opacity: 0.55;
 }
 .thumb {
   flex: none;
-  width: 5.5rem;
-  height: 5.5rem;
-  border-radius: 8px;
+  width: clamp(5.25rem, 7vw + 3rem, 10rem);
+  aspect-ratio: 1;
+  border-radius: 0.75rem;
   overflow: hidden;
-  background: #e3e9e4;
+  background: #3a2a21;
   display: grid;
   place-items: center;
-  font-size: 2rem;
+  font-size: clamp(2.4rem, 4vw, 3.4rem);
 }
 .thumb img {
   width: 100%;
@@ -162,49 +334,70 @@ main {
 }
 .row {
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-between;
-  gap: 0.5rem;
-  font-weight: 600;
+  align-items: baseline;
+  column-gap: 0.75rem;
+  font-weight: 700;
+  font-size: clamp(1.05rem, 0.95rem + 0.4vw, 1.3rem);
+  line-height: 1.3;
+  color: var(--ink);
 }
 .price {
-  color: var(--chili);
+  color: var(--saffron);
+  font-weight: 800;
+  font-size: 1.1em;
   white-space: nowrap;
+  text-shadow: 0 0 18px rgba(242, 169, 0, 0.35);
 }
 .desc {
-  font-size: 0.9rem;
+  font-size: clamp(0.92rem, 0.88rem + 0.2vw, 1.05rem);
   color: var(--muted);
-  margin-top: 0.2rem;
+  margin-top: 0.3rem;
 }
 .soldout {
-  font-size: 0.8rem;
-  color: var(--chili);
+  font-size: 0.85rem;
+  color: var(--chili-soft);
   font-weight: 600;
 }
 
+/* ---------- Pied de page ---------- */
 footer {
-  background: var(--ink);
-  color: #cdd5e6;
-  padding: 2.5rem 1.25rem;
+  background: var(--bg-deep);
+  border-top: 1px solid var(--line);
+  color: var(--muted);
+  padding: clamp(2.5rem, 5vw, 4rem)
+    max(var(--gutter), env(safe-area-inset-right))
+    calc(clamp(2.5rem, 5vw, 4rem) + env(safe-area-inset-bottom))
+    max(var(--gutter), env(safe-area-inset-left));
   text-align: center;
+  line-height: 1.7;
 }
 footer h2 {
-  color: #fff;
-  margin-bottom: 0.5rem;
+  color: var(--ink);
+  font-size: clamp(1.4rem, 1rem + 1.2vw, 2rem);
+  margin-bottom: 0.6rem;
 }
 
-/* Pop-up */
+/* ---------- Pop-up ---------- */
 dialog {
-  border: 0;
-  border-radius: 16px;
+  border: 1px solid var(--line);
+  border-radius: 1.25rem;
   padding: 0;
-  width: min(92vw, 26rem);
-  overflow: hidden;
+  width: min(92vw, 28rem);
+  max-height: 92vh;
+  max-height: 92dvh; /* tient compte des barres d'adresse mobiles */
+  overflow: auto;
+  overscroll-behavior: contain;
   background: var(--card);
   color: var(--ink);
   margin: auto;
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.6);
 }
 dialog::backdrop {
-  background: rgba(20, 26, 44, 0.65);
+  background: rgba(8, 5, 4, 0.78);
+  -webkit-backdrop-filter: blur(3px);
+  backdrop-filter: blur(3px);
 }
 dialog[open] {
   animation: pop 0.25s ease-out;
@@ -216,8 +409,9 @@ dialog[open] {
   }
 }
 .popup-img {
-  height: 13rem;
-  background: #e3e9e4;
+  height: clamp(9rem, 32vh, 16rem);
+  height: clamp(9rem, 32dvh, 16rem); /* plus bas en paysage téléphone */
+  background: #3a2a21;
   display: grid;
   place-items: center;
   font-size: 4rem;
@@ -228,54 +422,122 @@ dialog[open] {
   object-fit: cover;
 }
 .popup-body {
-  padding: 1.25rem 1.5rem 1.5rem;
+  padding: 1.25rem 1.5rem 1.6rem;
   text-align: center;
 }
 .badge {
   display: inline-block;
   background: var(--chili);
   color: #fff;
-  font-size: 0.85rem;
+  font-size: 0.9rem;
   font-weight: 600;
-  padding: 0.15rem 0.7rem;
+  padding: 0.2rem 0.8rem;
   border-radius: 999px;
   margin-bottom: 0.6rem;
 }
 .popup-body h2 {
-  font-size: 1.7rem;
+  font-size: clamp(1.5rem, 1.2rem + 1vw, 2rem);
   font-weight: 800;
   line-height: 1.15;
+  letter-spacing: -0.02em;
 }
 .popup-body p {
   color: var(--muted);
   margin-top: 0.4rem;
 }
 .popup-price {
-  color: var(--chili) !important;
+  color: var(--saffron) !important;
   font-weight: 800;
-  font-size: 1.4rem;
-  margin-bottom: 1rem;
+  font-size: 1.5rem;
+  margin-bottom: 1.1rem;
 }
 .close {
   position: absolute;
   top: 0.6rem;
   right: 0.6rem;
-  width: 2.2rem;
-  height: 2.2rem;
+  width: 2.75rem; /* 44px : zone tactile confortable */
+  height: 2.75rem;
   border: 0;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.9);
-  font-size: 1.5rem;
+  background: rgba(12, 7, 5, 0.75);
+  color: var(--ink);
+  font-size: 1.6rem;
   line-height: 1;
   cursor: pointer;
   z-index: 1;
+  transition: background 0.2s;
 }
 
+/* ---------- Survols (boutons) : uniquement sur appareils avec souris ---------- */
+@media (hover: hover) {
+  .close:hover {
+    background: var(--chili);
+  }
+  .catnav a:not(.on):hover {
+    border-color: var(--saffron);
+    color: var(--saffron);
+  }
+}
+
+/* ---------- Très petits écrans (<= 360px) ---------- */
+@media (max-width: 22.5rem) {
+  .item {
+    flex-direction: column; /* image au-dessus : le texte garde toute la largeur */
+  }
+  .thumb {
+    width: min(
+      100%,
+      14rem
+    ); /* carré, comme sur les autres tailles : le kebab n'est plus coupé */
+    aspect-ratio: 1;
+    align-self: center;
+  }
+  .info {
+    width: 100%;
+  }
+  .top nav a {
+    padding-inline: 0.4rem;
+  }
+}
+
+/* ---------- Mobile (<= 30rem) ---------- */
+@media (max-width: 30rem) {
+  .hero .btn {
+    display: block; /* bouton pleine largeur, plus facile au pouce */
+  }
+  .popup-body {
+    padding-inline: 1.1rem;
+  }
+}
+
+/* ---------- Téléphone en paysage (peu de hauteur) ---------- */
+@media (max-height: 30rem) and (orientation: landscape) {
+  .hero {
+    padding-block: 2rem 2.5rem;
+  }
+  .popup-img {
+    height: 7rem;
+  }
+}
+
+/* ---------- Grands écrans (>= 100rem) : on garde la lisibilité ---------- */
+@media (min-width: 100rem) {
+  :root {
+    --wrap: 96rem;
+  }
+}
+
+/* ---------- Accessibilité : mouvements réduits ---------- */
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
   }
   dialog[open] {
     animation: none;
+  }
+  *,
+  *::before,
+  *::after {
+    transition: none !important;
   }
 }

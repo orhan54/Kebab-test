@@ -1,106 +1,21 @@
 /* ============ CONFIGURATION (la seule partie à modifier) ============ */
 const CONFIG = {
-  // Colle ici les liens CSV publiés de Google Sheets (un par onglet).
-  // Laisse vide ("") pour utiliser les données de démonstration plus bas.
+  // Liens CSV publiés de Google Sheets (un par onglet)
   MENU_URL:
     "https://docs.google.com/spreadsheets/d/e/2PACX-1vSdBIndNbtI5v_5GUjUDZ9DsKRSi5iowtjtqTE9qC5gETAhvFUYP-ud4DeZvMetFTcbknUbI7zb1L-c/pub?gid=0&single=true&output=csv",
   NOUVEAU_URL:
     "https://docs.google.com/spreadsheets/d/e/2PACX-1vSdBIndNbtI5v_5GUjUDZ9DsKRSi5iowtjtqTE9qC5gETAhvFUYP-ud4DeZvMetFTcbknUbI7zb1L-c/pub?gid=1513644124&single=true&output=csv",
-  // Dossier où sont rangées les photos (le tableau contient juste le nom du fichier)
+  // Dossier des photos (la feuille contient juste le nom du fichier)
   IMAGES: "images/",
 };
 
-/* ============ DONNÉES DE DÉMO (même format que les feuilles) ============ */
-const DEMO_MENU = [
-  {
-    nom: "Kebab classique",
-    categorie: "Sandwichs",
-    prix: "8,50",
-    description:
-      "Viande de veau et dinde, salade, tomate, oignon, sauce au choix.",
-    photo: "kebab-classique.webp",
-    disponible: "VRAI",
-  },
-  {
-    nom: "Kebab poulet",
-    categorie: "Sandwichs",
-    prix: "8,50",
-    description: "Poulet mariné, crudités, sauce blanche.",
-    photo: "kebab-poulet.webp",
-    disponible: "VRAI",
-  },
-  {
-    nom: "Dürüm",
-    categorie: "Sandwichs",
-    prix: "9,00",
-    description: "Galette fine roulée, viande, crudités, sauce.",
-    photo: "durum.webp",
-    disponible: "VRAI",
-  },
-  {
-    nom: "Assiette kebab",
-    categorie: "Assiettes",
-    prix: "12,50",
-    description: "Viande, frites, salade, sauce.",
-    photo: "assiette.webp",
-    disponible: "VRAI",
-  },
-  {
-    nom: "Assiette falafels",
-    categorie: "Assiettes",
-    prix: "11,50",
-    description: "Falafels maison, houmous, salade.",
-    photo: "falafel.webp",
-    disponible: "FAUX",
-  },
-  {
-    nom: "Menu kebab",
-    categorie: "Menus",
-    prix: "11,00",
-    description: "Sandwich + frites + boisson.",
-    photo: "menu-kebab.webp",
-    disponible: "VRAI",
-  },
-  {
-    nom: "Frites",
-    categorie: "Accompagnements",
-    prix: "3,00",
-    description: "",
-    photo: "",
-    disponible: "VRAI",
-  },
-  {
-    nom: "Baklava (2 pièces)",
-    categorie: "Desserts",
-    prix: "3,50",
-    description: "Pistache et miel.",
-    photo: "",
-    disponible: "VRAI",
-  },
-  {
-    nom: "Canette 33 cl",
-    categorie: "Boissons",
-    prix: "1,50",
-    description: "",
-    photo: "",
-    disponible: "VRAI",
-  },
-];
-const DEMO_NOUVEAU = [
-  {
-    actif: "VRAI",
-    nom: "Le Sultan",
-    description:
-      "Agneau grillé, fromage fondu, oignons confits et sauce piquante maison.",
-    prix: "10,50",
-    photo: "sultan.webp",
-  },
-];
-
 /* ============ OUTILS ============ */
 const $ = (id) => document.getElementById(id);
+
 const isTrue = (v) =>
   ["true", "vrai", "1", "oui", "x"].includes(String(v).trim().toLowerCase());
+
+// Minuscules, sans accents ni espaces : "Catégorie " devient "categorie"
 const norm = (s) =>
   s
     .normalize("NFD")
@@ -156,106 +71,234 @@ function parseCSV(text) {
     );
 }
 
-async function loadSheet(url, demo) {
-  if (!url) return demo;
+async function loadSheet(url) {
+  if (!url) throw new Error("Lien de feuille manquant dans CONFIG");
   const res = await fetch(url);
   if (!res.ok) throw new Error("Feuille inaccessible (" + res.status + ")");
   return parseCSV(await res.text());
 }
 
-// Vignette : photo si elle existe, sinon un emoji de secours
-function makeImage(file, alt, fallback = "🥙") {
-  const box = document.createElement("div");
+// Remplit une vignette : photo si elle existe, sinon un emoji de secours
+function fillImage(box, file, alt, fallback = "🥙") {
   box.textContent = fallback;
-  if (file) {
-    const img = new Image();
-    img.alt = alt;
-    img.loading = "lazy";
-    img.onload = () => {
-      box.textContent = "";
-      box.append(img);
-    };
-    img.src = /^https?:/.test(file) ? file : CONFIG.IMAGES + file;
-  }
-  return box;
+  if (!file) return;
+  const img = new Image();
+  img.alt = alt;
+  img.onload = () => box.replaceChildren(img);
+  img.onerror = () => console.warn("Image introuvable :", img.src);
+  img.src = /^https?:/.test(file) ? file : CONFIG.IMAGES + file;
 }
 
 /* ============ MENU ============ */
+function renderItem(r) {
+  const available = isTrue(r.disponible);
+
+  const li = document.createElement("li");
+  li.className = "item" + (available ? "" : " off");
+
+  const name = document.createElement("span");
+  name.textContent = r.nom;
+  const price = document.createElement("span");
+  price.className = "price";
+  price.textContent = formatPrice(r.prix);
+  const row = document.createElement("div");
+  row.className = "row";
+  row.append(name, price);
+
+  const info = document.createElement("div");
+  info.className = "info";
+  info.append(row);
+
+  if (r.description) {
+    const desc = document.createElement("p");
+    desc.className = "desc";
+    desc.textContent = r.description;
+    info.append(desc);
+  }
+  if (!available) {
+    const soldout = document.createElement("p");
+    soldout.className = "soldout";
+    soldout.textContent = "Indisponible aujourd'hui";
+    info.append(soldout);
+  }
+
+  const thumb = document.createElement("div");
+  thumb.className = "thumb";
+  fillImage(thumb, r.photo, r.nom);
+
+  li.append(thumb, info);
+  return li;
+}
+
 function renderMenu(rows) {
   const root = $("menu-content");
   root.replaceChildren();
+
+  // Regroupe les plats par catégorie (dans l'ordre de la feuille)
   const cats = new Map();
-  rows.forEach((r) => {
-    if (!r.nom) return;
+  for (const r of rows) {
+    if (!r.nom) continue;
     const c = r.categorie || "Autres";
     if (!cats.has(c)) cats.set(c, []);
     cats.get(c).push(r);
-  });
+  }
   if (!cats.size) {
     root.innerHTML = '<p class="state">Le menu arrive bientôt.</p>';
     return;
   }
 
-  cats.forEach((items, cat) => {
-    const sec = document.createElement("section");
-    sec.className = "cat";
-    const h = document.createElement("h3");
-    h.textContent = cat;
-    const ul = document.createElement("ul");
-    ul.className = "items";
-    items.forEach((r) => {
-      const ok = isTrue(r.disponible);
-      const li = document.createElement("li");
-      li.className = "item" + (ok ? "" : " off");
-      const thumb = makeImage(r.photo, r.nom);
-      thumb.className = "thumb";
-      const info = document.createElement("div");
-      info.className = "info";
-      const row = document.createElement("div");
-      row.className = "row";
-      const name = document.createElement("span");
-      name.textContent = r.nom;
-      const price = document.createElement("span");
-      price.className = "price";
-      price.textContent = formatPrice(r.prix);
-      row.append(name, price);
-      info.append(row);
-      if (r.description) {
-        const d = document.createElement("p");
-        d.className = "desc";
-        d.textContent = r.description;
-        info.append(d);
-      }
-      if (!ok) {
-        const s = document.createElement("p");
-        s.className = "soldout";
-        s.textContent = "Indisponible aujourd'hui";
-        info.append(s);
-      }
-      li.append(thumb, info);
-      ul.append(li);
-    });
-    sec.append(h, ul);
-    root.append(sec);
+  let n = 0;
+  for (const [cat, items] of cats) {
+    const section = document.createElement("section");
+    section.className = "cat";
+    section.id = "cat-" + n++;
+    const title = document.createElement("h3");
+    title.textContent = cat;
+    const list = document.createElement("ul");
+    list.className = "items";
+    list.append(...items.map(renderItem));
+    section.append(title, list);
+    root.append(section);
+  }
+  renderCategoryNav([...cats.keys()]);
+}
+
+function showMenuError(err) {
+  $("menu-content").innerHTML =
+    '<p class="state">Impossible de charger le menu pour le moment. Réessayez dans un instant.</p>';
+  console.error(err);
+}
+
+/* ============ NAVIGATION PAR CATÉGORIES ============ */
+const root = document.documentElement;
+const reduceMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+// Mesure la hauteur des barres collantes pour que le défilement s'arrête au bon endroit
+function syncBars() {
+  const nav = $("cat-nav");
+  root.style.setProperty(
+    "--top-h",
+    document.querySelector(".top").offsetHeight + "px",
+  );
+  root.style.setProperty("--nav-h", (nav ? nav.offsetHeight : 0) + "px");
+}
+const bars = new ResizeObserver(syncBars);
+bars.observe(document.querySelector(".top"));
+
+function renderCategoryNav(names) {
+  $("cat-nav")?.remove();
+  if (names.length < 2) return; // une seule catégorie : inutile
+
+  const nav = document.createElement("nav");
+  nav.id = "cat-nav";
+  nav.className = "catnav";
+  nav.setAttribute("aria-label", "Catégories du menu");
+  names.forEach((name, i) => {
+    const a = document.createElement("a");
+    a.href = "#cat-" + i;
+    a.textContent = name;
+    nav.append(a);
   });
+  document.querySelector("main").before(nav);
+
+  bars.observe(nav);
+  syncBars();
+  trackActiveCategory(nav);
+}
+
+// Met en surbrillance la catégorie visible et garde son bouton centré dans la barre
+function trackActiveCategory(nav) {
+  const links = [...nav.children];
+  const sections = links.map((a) => document.querySelector(a.hash));
+  let current = -1;
+  let queued = false;
+  let locked = false; // vrai pendant le défilement déclenché par un clic
+  let unlockTimer;
+
+  function setActive(idx) {
+    if (idx === current) return;
+    current = idx;
+    links.forEach((a, i) => {
+      a.classList.toggle("on", i === idx);
+      if (i === idx) a.setAttribute("aria-current", "true");
+      else a.removeAttribute("aria-current");
+    });
+    if (idx >= 0) {
+      const a = links[idx];
+      nav.scrollTo({
+        left: a.offsetLeft - (nav.clientWidth - a.offsetWidth) / 2,
+        behavior: reduceMotion ? "auto" : "smooth",
+      });
+    }
+  }
+
+  function update() {
+    queued = false;
+    const line =
+      parseFloat(getComputedStyle(root).getPropertyValue("--top-h")) +
+      nav.offsetHeight +
+      24;
+    let idx = -1;
+    sections.forEach((s, i) => {
+      if (s.getBoundingClientRect().top <= line) idx = i;
+    });
+    setActive(idx);
+  }
+
+  const unlock = () => {
+    locked = false;
+    clearTimeout(unlockTimer);
+  };
+
+  // Clic sur un bouton : il s'allume tout de suite, sans passer par les catégories du milieu
+  nav.addEventListener("click", (e) => {
+    const a = e.target.closest("a");
+    if (!a) return;
+    setActive(links.indexOf(a));
+    locked = true;
+    clearTimeout(unlockTimer);
+    unlockTimer = setTimeout(unlock, 1000); // sécurité si la page ne bouge pas
+  });
+
+  addEventListener(
+    "scroll",
+    () => {
+      if (locked) {
+        // on attend la fin du défilement (150 ms sans mouvement), puis on reprend le suivi
+        clearTimeout(unlockTimer);
+        unlockTimer = setTimeout(unlock, 150);
+        return;
+      }
+      if (!queued) {
+        queued = true;
+        requestAnimationFrame(update);
+      }
+    },
+    { passive: true },
+  );
+
+  // Si la personne reprend la main pendant le défilement, le suivi reprend aussitôt
+  ["wheel", "touchstart", "keydown"].forEach((ev) =>
+    addEventListener(ev, unlock, { passive: true }),
+  );
+
+  update();
 }
 
 /* ============ POP-UP NOUVEAU SANDWICH ============ */
 function showPopup(rows) {
   const s = rows.find((r) => isTrue(r.actif) && r.nom);
   if (!s) return;
-  let seen = false;
+
+  // Une seule fois par visite
   try {
-    seen = sessionStorage.getItem("popup-vu") === s.nom;
+    if (sessionStorage.getItem("popup-vu") === s.nom) return;
   } catch (e) {}
-  if (seen) return; // déjà vu pendant cette visite
 
   $("popup-title").textContent = s.nom;
   $("popup-desc").textContent = s.description || "";
   $("popup-price").textContent = s.prix ? formatPrice(s.prix) : "";
-  const img = makeImage(s.photo, s.nom, "🥙");
-  img.className = "popup-img";
-  $("popup-img").replaceWith(img);
+  fillImage($("popup-img"), s.photo, s.nom);
 
   const dlg = $("popup");
   dlg.showModal();
@@ -266,23 +309,11 @@ function showPopup(rows) {
   $("popup-close").onclick = () => dlg.close();
   $("popup-cta").onclick = () => dlg.close(); // le lien #menu fait défiler la page
   dlg.addEventListener("click", (e) => {
-    if (e.target === dlg) dlg.close();
-  }); // clic hors de la fenêtre
+    if (e.target === dlg) dlg.close(); // clic hors de la fenêtre
+  });
 }
 
 /* ============ DÉMARRAGE ============ */
-(async function init() {
-  try {
-    const menu = await loadSheet(CONFIG.MENU_URL, DEMO_MENU);
-    renderMenu(menu);
-  } catch (e) {
-    $("menu-content").innerHTML =
-      '<p class="state">Impossible de charger le menu pour le moment. Réessayez dans un instant.</p>';
-    console.error(e);
-  }
-  try {
-    showPopup(await loadSheet(CONFIG.NOUVEAU_URL, DEMO_NOUVEAU));
-  } catch (e) {
-    console.error(e);
-  }
-})();
+// Les deux feuilles se chargent en parallèle, indépendamment l'une de l'autre
+loadSheet(CONFIG.MENU_URL).then(renderMenu).catch(showMenuError);
+loadSheet(CONFIG.NOUVEAU_URL).then(showPopup).catch(console.error);
