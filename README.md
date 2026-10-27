@@ -1,6 +1,8 @@
 # Kebab O'Delice
 
-Site vitrine du restaurant **Kebab O'Delice** (Pompey) : la carte, le sandwich du moment et les infos pratiques.
+> **Projet de démonstration (maquette).** Ce site est un exemple de site vitrine pour un restaurant de kebab. Il n'est pas le site officiel du restaurant. Il pourra être finalisé avec le client si besoin : les données, les photos et les informations pratiques sont donc susceptibles de changer.
+
+Site vitrine pour un restaurant de kebab : la carte, le sandwich du moment et les infos pratiques.
 
 Le site est volontairement simple : **HTML, CSS et JavaScript**, sans framework ni outil de compilation. Les plats et les prix ne sont pas écrits dans le code : ils sont lus depuis un **Google Sheet**, ce qui permet de modifier la carte depuis un téléphone, sans toucher au code.
 
@@ -30,24 +32,24 @@ Un seul Google Sheet avec **deux onglets**, chacun publié sur le web au format 
 
 ### Onglet « menu »
 
-| Colonne | Contenu |
-| --- | --- |
-| `nom` | Nom du plat |
-| `categorie` | Catégorie (Sandwichs, Assiettes, Menus…). L'ordre de la feuille est conservé |
-| `prix` | Prix, par exemple `8,50` |
-| `description` | Texte court (facultatif) |
-| `photo` | Nom du fichier dans `images/`, par exemple `kebab-classique.webp` (facultatif) |
-| `disponible` | `VRAI` ou `FAUX`. Un plat à `FAUX` est affiché comme indisponible |
+| Colonne       | Contenu                                                                        |
+| ------------- | ------------------------------------------------------------------------------ |
+| `nom`         | Nom du plat                                                                    |
+| `categorie`   | Catégorie (Sandwichs, Assiettes, Menus…). L'ordre de la feuille est conservé   |
+| `prix`        | Prix, par exemple `8,50`                                                       |
+| `description` | Texte court (facultatif)                                                       |
+| `photo`       | Nom du fichier dans `images/`, par exemple `kebab-classique.webp` (facultatif) |
+| `disponible`  | `VRAI` ou `FAUX`. Un plat à `FAUX` est affiché comme indisponible              |
 
 ### Onglet « nouveau sandwich »
 
-| Colonne | Contenu |
-| --- | --- |
-| `actif` | `VRAI` pour afficher la fenêtre, `FAUX` pour la masquer |
-| `nom` | Nom du sandwich |
-| `description` | Texte court |
-| `prix` | Prix |
-| `photo` | Nom du fichier dans `images/` |
+| Colonne       | Contenu                                                 |
+| ------------- | ------------------------------------------------------- |
+| `actif`       | `VRAI` pour afficher la fenêtre, `FAUX` pour la masquer |
+| `nom`         | Nom du sandwich                                         |
+| `description` | Texte court                                             |
+| `prix`        | Prix                                                    |
+| `photo`       | Nom du fichier dans `images/`                           |
 
 Les noms de colonnes ne doivent pas être renommés : le code les utilise tels quels.
 
