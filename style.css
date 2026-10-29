@@ -1,6 +1,4 @@
-/* Kebab O'Delice : thème sombre "braise", fluide du petit mobile au très grand écran.
-   Principes : unités relatives (rem), tailles fluides (clamp), grille auto-adaptative,
-   zones tactiles >= 44px, survols réservés aux appareils qui en ont, mouvements réduits respectés. */
+/* Kebab O'Delices : thème sombre */
 
 :root {
   color-scheme: dark;
@@ -17,9 +15,9 @@
   --saffron: #f2a900;
   --saffron-hot: #ffbd2e;
 
-  /* Marge latérale fluide : 16px sur petit mobile, jusqu'à 48px sur grand écran */
+  /* marge latérale fluide */
   --gutter: clamp(1rem, 4vw, 3rem);
-  /* Largeur maximale du contenu */
+  /* largeur max du contenu */
   --wrap: 84rem;
 }
 
@@ -33,18 +31,17 @@
 }
 
 html {
-  /* Échelle fluide : 16px (mobile) -> ~20px (grand écran).
-     Basée sur rem, donc la taille de police choisie par l'utilisateur dans son navigateur est respectée. */
+  /* 16px sur mobile, ~20px sur grand écran */
   font-size: clamp(1rem, 0.5vw + 0.69rem, 1.3rem);
   scroll-behavior: smooth;
-  /* le défilement s'arrête sous la barre du haut + la barre des catégories */
+  /* compense les barres collantes */
   scroll-padding-top: calc(var(--top-h, 3.5rem) + var(--nav-h, 0px) + 0.75rem);
   background: var(--bg-deep);
   -webkit-text-size-adjust: 100%;
   text-size-adjust: 100%;
 }
 body {
-  min-width: 20rem; /* tient jusqu'à 320px */
+  min-width: 20rem; /* jusqu'à 320px */
   font-family: "Bricolage Grotesque", system-ui, sans-serif;
   background: var(--bg);
   color: var(--ink);
@@ -76,6 +73,68 @@ a {
   outline-offset: 2px;
 }
 
+.btn svg {
+  width: 1.2em;
+  height: 1.2em;
+  flex: none;
+  fill: currentColor;
+}
+/* WhatsApp */
+.btn-wa {
+  background: #25d366;
+  color: #06240f;
+  box-shadow: 0 6px 24px rgba(37, 211, 102, 0.25);
+}
+.btn-wa:hover {
+  background: #3ee37c;
+  box-shadow: 0 8px 36px rgba(37, 211, 102, 0.5);
+}
+/* Appeler : bouton contour */
+.contact-actions .btn-call {
+  background: transparent;
+  color: var(--saffron);
+  border: 2px solid var(--saffron);
+  box-shadow: none;
+}
+.contact-actions .btn-call:hover {
+  background: rgba(242, 169, 0, 0.14);
+  box-shadow: 0 8px 30px rgba(242, 169, 0, 0.25);
+}
+/* bouton inactif */
+.btn[aria-disabled="true"] {
+  opacity: 0.55;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+/* Barre d'appel mobile */
+.callbar {
+  position: fixed;
+  inset: auto 0 0 0;
+  z-index: 6;
+  display: none;
+  gap: 0.6rem;
+  padding: 0.6rem max(var(--gutter), env(safe-area-inset-right))
+    calc(0.6rem + env(safe-area-inset-bottom))
+    max(var(--gutter), env(safe-area-inset-left));
+  background: rgba(12, 7, 5, 0.92);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  border-top: 1px solid var(--line);
+}
+.callbar .btn {
+  flex: 1;
+  min-height: 3rem;
+  padding-inline: 0.5rem;
+}
+.contact-actions {
+  display: none; /* visible sur mobile uniquement, voir plus bas */
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.75rem 1rem;
+  margin-top: 1.5rem;
+}
+
 /* ---------- Barre du haut ---------- */
 .top {
   position: sticky;
@@ -86,7 +145,7 @@ a {
   justify-content: space-between;
   align-items: center;
   column-gap: 1rem;
-  /* max() : respecte l'encoche des téléphones en paysage */
+  /* safe-area : encoche en paysage */
   padding: 0.35rem max(var(--gutter), env(safe-area-inset-right)) 0.35rem
     max(var(--gutter), env(safe-area-inset-left));
   background: rgba(12, 7, 5, 0.88);
@@ -104,6 +163,22 @@ a {
   text-decoration: none;
   color: var(--saffron);
 }
+.top-right {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 0.25rem clamp(0.75rem, 2vw, 1.75rem);
+}
+.top-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+.btn-sm {
+  min-height: 2.5rem;
+  padding: 0.35rem 1.1rem;
+  font-size: 0.95rem;
+}
 .top nav {
   display: flex;
   gap: clamp(0.25rem, 2vw, 1.5rem);
@@ -111,7 +186,7 @@ a {
 .top nav a {
   display: inline-flex;
   align-items: center;
-  min-height: 2.75rem; /* zone tactile >= 44px */
+  min-height: 2.75rem; /* 44px mini */
   padding-inline: 0.6rem;
   text-decoration: none;
   color: var(--muted);
@@ -145,7 +220,11 @@ a {
   margin-inline: auto;
 }
 .hero h1 {
-  font-size: clamp(2.25rem, 1.2rem + 6.2vw, 6.5rem);
+  /* sur petit mobile, la taille suit la largeur pour que la 1re ligne ne passe pas à la ligne */
+  font-size: min(
+    clamp(2.25rem, 1.2rem + 6.2vw, 6.5rem),
+    calc((100vw - 2 * var(--gutter)) / 8.6)
+  );
   font-weight: 800;
   line-height: 1.02;
   letter-spacing: -0.03em;
@@ -154,18 +233,69 @@ a {
 }
 .hero p {
   margin-top: 1.1rem;
-  max-width: 40rem; /* ligne courte = lecture confortable */
+  margin-right: auto;
+  margin-left: max(
+    0px,
+    calc((100% - var(--wrap)) / 2)
+  ); /* aligné avec le titre */
+  max-width: 40rem;
   font-size: clamp(1.05rem, 0.95rem + 0.5vw, 1.5rem);
   color: var(--muted);
 }
-.hero .btn {
-  display: table;
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem 1rem;
   margin-top: 2rem;
+}
+
+/* Pastille d'ouverture */
+.hero .status {
+  display: flex;
+  width: fit-content;
+  max-width: 100%;
+  align-items: center;
+  gap: 0.6rem;
+  margin-top: 1.5rem;
+  margin-right: auto;
+  margin-left: max(0px, calc((100% - var(--wrap)) / 2));
+  padding: 0.45rem 1rem;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: rgba(12, 7, 5, 0.55);
+  font-weight: 600;
+  font-size: clamp(0.95rem, 0.9rem + 0.2vw, 1.1rem);
+}
+.status:empty {
+  display: none !important;
+}
+.status .dot {
+  flex: none;
+  width: 0.7rem;
+  height: 0.7rem;
+  border-radius: 50%;
+  background: currentColor;
+  box-shadow: 0 0 10px currentColor;
+}
+.status.open {
+  color: #3ddc84;
+  border-color: rgba(61, 220, 132, 0.45);
+}
+.status.soon {
+  color: var(--saffron);
+  border-color: rgba(242, 169, 0, 0.5);
+}
+.status.closed {
+  color: var(--chili-soft);
+  border-color: rgba(255, 122, 99, 0.45);
 }
 
 /* ---------- Boutons ---------- */
 .btn {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.55rem;
   min-height: 2.75rem;
   padding: 0.8rem 1.8rem;
   border-radius: 999px;
@@ -215,7 +345,7 @@ a {
   flex: none;
   display: inline-flex;
   align-items: center;
-  min-height: 2.75rem; /* zone tactile >= 44px */
+  min-height: 2.75rem; /* 44px mini */
   padding-inline: 1.15rem;
   border: 1px solid var(--line);
   border-radius: 999px;
@@ -228,6 +358,12 @@ a {
     background 0.2s,
     color 0.2s,
     border-color 0.2s;
+}
+/* bouton d'offre */
+.catnav a.hot {
+  background: linear-gradient(90deg, var(--chili), #e8590c);
+  border-color: transparent;
+  color: #fff;
 }
 .catnav a.on {
   background: var(--saffron);
@@ -278,8 +414,7 @@ main {
   border-radius: 3px;
 }
 
-/* Grille auto-adaptative : 1 colonne sur mobile, 2 sur tablette, 3+ sur PC.
-   min(100%, 22rem) évite tout débordement sur les écrans très étroits. */
+/* grille : 1 colonne sur mobile, 2 sur tablette, 3+ sur PC */
 .items {
   list-style: none;
   padding: 0;
@@ -292,14 +427,14 @@ main {
   align-items: flex-start;
   gap: clamp(0.9rem, 1.6vw, 1.4rem);
   background: var(--card);
-  border: 1px solid var(--saffron); /* disponible : cadre jaune fixe */
+  border: 1px solid var(--saffron); /* disponible */
   border-radius: 1rem;
   padding: clamp(0.85rem, 1.5vw, 1.6rem);
   box-shadow:
     0 0 0 1px rgba(242, 169, 0, 0.25),
     0 8px 30px rgba(242, 169, 0, 0.15);
 }
-/* indisponible : cadre rouge fixe, contenu atténué mais mention bien lisible */
+/* indisponible */
 .item.off {
   border-color: var(--chili);
   box-shadow:
@@ -355,6 +490,32 @@ main {
   color: var(--muted);
   margin-top: 0.3rem;
 }
+/* Offres en tête de carte */
+.item.offer {
+  box-shadow:
+    0 0 0 1px rgba(242, 169, 0, 0.45),
+    0 10px 40px rgba(242, 169, 0, 0.28);
+}
+.offer-tag {
+  display: inline-block;
+  margin-bottom: 0.4rem;
+  padding: 0.12rem 0.65rem;
+  border-radius: 999px;
+  background: var(--chili);
+  color: #fff;
+  font-size: 0.78rem;
+  font-weight: 600;
+  line-height: 1.4;
+}
+/* ancien prix barré */
+.was {
+  margin-right: 0.15rem;
+  color: var(--muted);
+  font-weight: 400;
+  font-size: 0.85em;
+  text-decoration: line-through;
+  text-shadow: none;
+}
 .soldout {
   font-size: 0.85rem;
   color: var(--chili-soft);
@@ -373,6 +534,63 @@ footer {
   text-align: center;
   line-height: 1.7;
 }
+.hours {
+  list-style: none;
+  margin: 1.75rem auto 0;
+  padding: 0.25rem 1.25rem;
+  max-width: 32rem;
+  text-align: left;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 1rem;
+  box-shadow:
+    0 10px 30px rgba(0, 0, 0, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+.hours li {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.35rem 1rem;
+  padding: 0.95rem 0;
+  border-bottom: 1px solid var(--line);
+}
+.hours li:last-child {
+  border-bottom: 0;
+}
+.hours .day {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem 0.6rem;
+  font-weight: 700;
+  color: var(--ink);
+}
+.hours .times {
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+.hours li.today .times {
+  color: var(--saffron);
+  font-weight: 700;
+}
+/* pastilles */
+.tag {
+  padding: 0.12rem 0.6rem;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  line-height: 1.4;
+}
+.tag-today {
+  background: var(--saffron);
+  color: #1c1208;
+}
+.tag-note {
+  border: 1px solid rgba(255, 122, 99, 0.55);
+  color: var(--chili-soft);
+}
 footer h2 {
   color: var(--ink);
   font-size: clamp(1.4rem, 1rem + 1.2vw, 2rem);
@@ -381,18 +599,21 @@ footer h2 {
 
 /* ---------- Pop-up ---------- */
 dialog {
-  border: 1px solid var(--line);
+  border: 1px solid var(--saffron);
   border-radius: 1.25rem;
   padding: 0;
   width: min(92vw, 28rem);
   max-height: 92vh;
-  max-height: 92dvh; /* tient compte des barres d'adresse mobiles */
+  max-height: 92dvh;
   overflow: auto;
   overscroll-behavior: contain;
   background: var(--card);
   color: var(--ink);
   margin: auto;
-  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.6);
+  box-shadow:
+    0 30px 80px rgba(0, 0, 0, 0.6),
+    0 0 0 1px rgba(242, 169, 0, 0.25),
+    0 0 40px rgba(242, 169, 0, 0.15);
 }
 dialog::backdrop {
   background: rgba(8, 5, 4, 0.78);
@@ -410,11 +631,19 @@ dialog[open] {
 }
 .popup-img {
   height: clamp(9rem, 32vh, 16rem);
-  height: clamp(9rem, 32dvh, 16rem); /* plus bas en paysage téléphone */
+  height: clamp(9rem, 32dvh, 16rem);
+  position: relative;
   background: #3a2a21;
   display: grid;
   place-items: center;
   font-size: 4rem;
+}
+.popup-img::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, transparent 55%, var(--card));
+  pointer-events: none;
 }
 .popup-img img {
   width: 100%;
@@ -442,8 +671,17 @@ dialog[open] {
   letter-spacing: -0.02em;
 }
 .popup-body p {
-  color: var(--muted);
-  margin-top: 0.4rem;
+  color: #eadfd2;
+  font-size: 1.05rem;
+  line-height: 1.6;
+  margin-top: 0.5rem;
+}
+/* le badge reste blanc */
+.popup-body .badge {
+  color: #fff;
+  font-size: 0.9rem;
+  line-height: 1.4;
+  margin-top: 0;
 }
 .popup-price {
   color: var(--saffron) !important;
@@ -455,7 +693,7 @@ dialog[open] {
   position: absolute;
   top: 0.6rem;
   right: 0.6rem;
-  width: 2.75rem; /* 44px : zone tactile confortable */
+  width: 2.75rem; /* 44px mini */
   height: 2.75rem;
   border: 0;
   border-radius: 50%;
@@ -468,7 +706,7 @@ dialog[open] {
   transition: background 0.2s;
 }
 
-/* ---------- Survols (boutons) : uniquement sur appareils avec souris ---------- */
+/* ---------- Survols (souris uniquement) ---------- */
 @media (hover: hover) {
   .close:hover {
     background: var(--chili);
@@ -482,13 +720,10 @@ dialog[open] {
 /* ---------- Très petits écrans (<= 360px) ---------- */
 @media (max-width: 22.5rem) {
   .item {
-    flex-direction: column; /* image au-dessus : le texte garde toute la largeur */
+    flex-direction: column; /* image au-dessus du texte */
   }
   .thumb {
-    width: min(
-      100%,
-      14rem
-    ); /* carré, comme sur les autres tailles : le kebab n'est plus coupé */
+    width: min(100%, 14rem);
     aspect-ratio: 1;
     align-self: center;
   }
@@ -500,10 +735,39 @@ dialog[open] {
   }
 }
 
+/* ---------- Mobile et petite tablette (< 48rem) : barre d'appel en bas ---------- */
+@media (max-width: 47.99rem) {
+  .callbar {
+    display: flex;
+  }
+  .contact-actions {
+    display: flex;
+  }
+  .contact-actions .btn {
+    flex: 1 1 12rem;
+  }
+  .desktop-only {
+    display: none !important;
+  }
+  /* place pour la barre fixe */
+  footer {
+    padding-bottom: calc(
+      clamp(2.5rem, 5vw, 4rem) + 4.75rem + env(safe-area-inset-bottom)
+    );
+  }
+}
+
+/* ---------- Tablette et plus (>= 48rem) : pas de barre d'appel ---------- */
+@media (min-width: 48rem) {
+  .callbar {
+    display: none !important;
+  }
+}
+
 /* ---------- Mobile (<= 30rem) ---------- */
 @media (max-width: 30rem) {
-  .hero .btn {
-    display: block; /* bouton pleine largeur, plus facile au pouce */
+  .hero-actions .btn {
+    flex: 1 1 100%;
   }
   .popup-body {
     padding-inline: 1.1rem;
@@ -520,7 +784,7 @@ dialog[open] {
   }
 }
 
-/* ---------- Grands écrans (>= 100rem) : on garde la lisibilité ---------- */
+/* ---------- Grands écrans (>= 100rem) ---------- */
 @media (min-width: 100rem) {
   :root {
     --wrap: 96rem;

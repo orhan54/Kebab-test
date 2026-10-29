@@ -41,17 +41,33 @@ Un seul Google Sheet avec **deux onglets**, chacun publié sur le web au format 
 | `photo`       | Nom du fichier dans `images/`, par exemple `kebab-classique.webp` (facultatif) |
 | `disponible`  | `VRAI` ou `FAUX`. Un plat à `FAUX` est affiché comme indisponible              |
 
-### Onglet « nouveau sandwich »
+### Onglet « offres » (pop-up et section en tête de carte)
 
-| Colonne       | Contenu                                                 |
-| ------------- | ------------------------------------------------------- |
-| `actif`       | `VRAI` pour afficher la fenêtre, `FAUX` pour la masquer |
-| `nom`         | Nom du sandwich                                         |
-| `description` | Texte court                                             |
-| `prix`        | Prix                                                    |
-| `photo`       | Nom du fichier dans `images/`                           |
+Chaque ligne active est affichée dans une section en tête de la carte, et la première ouvre aussi le pop-up d'accueil.
+
+| Colonne        | Contenu                                                                                                                                                 |
+| -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `actif`        | `VRAI` pour afficher l'offre, `FAUX` pour la masquer                                                                                                    |
+| `type`         | `nouveau`, `promotion`, `menu`, `offre` ou vide (sandwich du moment). Il change le badge, le titre de la section et le bouton de la barre de catégories |
+| `nom`          | Nom du sandwich ou du menu                                                                                                                              |
+| `description`  | Texte court, par exemple la composition d'un menu complet                                                                                               |
+| `prix`         | Prix                                                                                                                                                    |
+| `ancien_prix`  | Facultatif : affiché barré à côté du prix (promotion)                                                                                                   |
+| `photo`        | Nom du fichier dans `images/`                                                                                                                           |
+| `badge`        | Facultatif : remplace le texte du badge et le titre de la section (ex. « Offre de la semaine »)                                                         |
+| `debut`, `fin` | Facultatif : période d'affichage, au format `2026-11-01` ou `01/11/2026` (jours inclus). Hors période, l'offre disparaît toute seule                    |
 
 Les noms de colonnes ne doivent pas être renommés : le code les utilise tels quels.
+
+## Horaires et statut d'ouverture
+
+La pastille « Ouvert maintenant / Ouvre bientôt / Fermé » et la liste des horaires du pied de page sont calculées automatiquement, à l'heure de Paris, à partir de `CONFIG` dans `script.js` :
+
+- `HORAIRES` : les horaires de chaque jour de la semaine (`"11:30-14:00, 18:00-21:30"`, ou `"fermé"`).
+- `EXCEPTIONS` : les jours particuliers (jour férié, fermeture exceptionnelle), au format `"2026-11-01": "18:00-21:00 | Toussaint"`. La date l'emporte sur le jour de la semaine, et le texte après `|` s'affiche à côté de l'horaire.
+- `BIENTOT` : nombre de minutes avant l'ouverture pendant lesquelles « Ouvre bientôt » s'affiche (30 par défaut).
+
+Pour modifier les horaires depuis un téléphone, on peut aussi ajouter un **3e onglet** au Google Sheet, le publier en CSV et renseigner son lien dans `HORAIRES_URL`. Colonnes : `jour` (un jour de la semaine, ou une date au format `2026-11-01`) et `horaires`. Les lignes du Sheet remplacent les valeurs de `CONFIG`.
 
 ## Ajouter ou modifier un plat
 

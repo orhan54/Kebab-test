@@ -2,8 +2,11 @@
 <html lang="fr">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Kebab O'Delice</title>
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <title>Kebab O'Delices</title>
     <meta
       name="description"
       content="Kebabs, sandwichs et menus faits maison. Découvrez notre carte et notre sandwich du moment."
@@ -19,13 +22,47 @@
   <body>
     <header class="top">
       <a class="logo" href="#">Kebab O'Delices</a>
+<<<<<<< HEAD
       <nav><a href="#menu">Menu</a><a href="#infos">Infos</a></nav>
+=======
+      <div class="top-right">
+        <nav><a href="#menu">Menu</a><a href="#infos">Infos</a></nav>
+        <!-- Appeler / WhatsApp (sur mobile : barre du bas) -->
+        <div class="top-actions desktop-only">
+          <a class="btn btn-sm btn-call" data-tel href="#">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path
+                d="M6.62 10.79a15.05 15.05 0 006.59 6.59l2.2-2.2a1 1 0 011.02-.24c1.12.37 2.33.57 3.57.57a1 1 0 011 1V20a1 1 0 01-1 1A17 17 0 013 4a1 1 0 011-1h3.5a1 1 0 011 1c0 1.25.2 2.45.57 3.57a1 1 0 01-.25 1.02l-2.2 2.2z"
+              />
+            </svg>
+            Appeler
+          </a>
+          <a
+            class="btn btn-sm btn-wa"
+            data-wa
+            href="#"
+            target="_blank"
+            rel="noopener"
+          >
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path
+                d="M20 2H4a2 2 0 00-2 2v18l4-4h14a2 2 0 002-2V4a2 2 0 00-2-2z"
+              />
+            </svg>
+            WhatsApp
+          </a>
+        </div>
+      </div>
+>>>>>>> 8c78ddd (Ajout des offres, horaires, boutons d'appel et responsive)
     </header>
 
     <section class="hero">
       <h1>Le kebab O'Delices,<br />saveurs rapides<br />et délicieuses.</h1>
       <p>Viande fraîche, pain du jour, sauces maison.</p>
-      <a class="btn" href="#menu">Voir le menu</a>
+      <div class="status" id="status" role="status"></div>
+      <div class="hero-actions">
+        <a class="btn" href="#menu">Voir le menu</a>
+      </div>
     </section>
 
     <main id="menu">
@@ -38,17 +75,56 @@
     <footer id="infos">
       <h2>Infos pratiques</h2>
       <p>
-        147 Av. du Général de Gaulle, 54340 Pompey, France<br />Tous les jours
-        de 11h30-14h et 18h-21h30<br />Tél. 09 80 46 99 38
+        147 Av. du Général de Gaulle,<br />54340 Pompey, France<br />Tél. 09 80
+        46 99 38
       </p>
+      <ul class="hours" id="hours" aria-label="Horaires d'ouverture"></ul>
+      <div class="contact-actions">
+        <a class="btn btn-call" data-tel href="#">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path
+              d="M6.62 10.79a15.05 15.05 0 006.59 6.59l2.2-2.2a1 1 0 011.02-.24c1.12.37 2.33.57 3.57.57a1 1 0 011 1V20a1 1 0 01-1 1A17 17 0 013 4a1 1 0 011-1h3.5a1 1 0 011 1c0 1.25.2 2.45.57 3.57a1 1 0 01-.25 1.02l-2.2 2.2z"
+            />
+          </svg>
+          Appeler
+        </a>
+        <a class="btn btn-wa" data-wa href="#" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path
+              d="M20 2H4a2 2 0 00-2 2v18l4-4h14a2 2 0 002-2V4a2 2 0 00-2-2z"
+            />
+          </svg>
+          Commander sur WhatsApp
+        </a>
+      </div>
     </footer>
 
-    <!-- Pop-up « Nouveau sandwich » -->
+    <!-- Barre d'appel mobile -->
+    <div class="callbar" role="group" aria-label="Commander">
+      <a class="btn btn-call" data-tel href="#">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path
+            d="M6.62 10.79a15.05 15.05 0 006.59 6.59l2.2-2.2a1 1 0 011.02-.24c1.12.37 2.33.57 3.57.57a1 1 0 011 1V20a1 1 0 01-1 1A17 17 0 013 4a1 1 0 011-1h3.5a1 1 0 011 1c0 1.25.2 2.45.57 3.57a1 1 0 01-.25 1.02l-2.2 2.2z"
+          />
+        </svg>
+        Appeler
+      </a>
+      <a class="btn btn-wa" data-wa href="#" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path
+            d="M20 2H4a2 2 0 00-2 2v18l4-4h14a2 2 0 002-2V4a2 2 0 00-2-2z"
+          />
+        </svg>
+        WhatsApp
+      </a>
+    </div>
+
+    <!-- Pop-up offre -->
     <dialog id="popup" aria-labelledby="popup-title">
       <button class="close" id="popup-close" aria-label="Fermer">×</button>
       <div class="popup-img" id="popup-img"></div>
       <div class="popup-body">
-        <p class="badge">Le sandwich du moment</p>
+        <p class="badge" id="popup-badge">Le sandwich du moment</p>
         <h2 id="popup-title"></h2>
         <p id="popup-desc"></p>
         <p class="popup-price" id="popup-price"></p>
