@@ -633,6 +633,7 @@ dialog[open] {
   height: clamp(9rem, 32vh, 16rem);
   height: clamp(9rem, 32dvh, 16rem);
   position: relative;
+  overflow: hidden; /* CORRECTIF : l'image ne peut plus déborder sur le texte */
   background: #3a2a21;
   display: grid;
   place-items: center;
@@ -646,11 +647,17 @@ dialog[open] {
   pointer-events: none;
 }
 .popup-img img {
+  /* CORRECTIF : l'image remplit exactement la zone, sans influencer sa hauteur */
+  position: absolute;
+  inset: 0;
   width: 100%;
   height: 100%;
+  max-width: none;
   object-fit: cover;
+  display: block;
 }
 .popup-body {
+  position: relative;
   padding: 1.25rem 1.5rem 1.6rem;
   text-align: center;
 }
@@ -702,7 +709,7 @@ dialog[open] {
   font-size: 1.6rem;
   line-height: 1;
   cursor: pointer;
-  z-index: 1;
+  z-index: 2;
   transition: background 0.2s;
 }
 
@@ -733,9 +740,6 @@ dialog[open] {
   .top nav a {
     padding-inline: 0.4rem;
   }
-  .contact-actions a {
-    display: none;
-  }
 }
 
 /* ---------- Mobile et petite tablette (< 48rem) : barre d'appel en bas ---------- */
@@ -751,9 +755,6 @@ dialog[open] {
   }
   .desktop-only {
     display: none !important;
-  }
-  .contact-actions a {
-    display: none;
   }
   /* place pour la barre fixe */
   footer {
