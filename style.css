@@ -733,6 +733,9 @@ dialog[open] {
   .top nav a {
     padding-inline: 0.4rem;
   }
+  .contact-actions a {
+    display: none;
+  }
 }
 
 /* ---------- Mobile et petite tablette (< 48rem) : barre d'appel en bas ---------- */
@@ -748,6 +751,9 @@ dialog[open] {
   }
   .desktop-only {
     display: none !important;
+  }
+  .contact-actions a {
+    display: none;
   }
   /* place pour la barre fixe */
   footer {
