@@ -151,6 +151,14 @@ function renderItem(r) {
     soldout.textContent = "Indisponible aujourd'hui";
     info.append(soldout);
   }
+  // Prix menu : toujours en bas de la card, affiché seulement si renseigné
+  const menuValue = r["prix menu"] || r.menu || "";
+  if (menuValue.trim()) {
+    const menu = document.createElement("p");
+    menu.className = "menu-price";
+    menu.textContent = "Menu : " + formatPrice(menuValue);
+    info.append(menu);
+  }
 
   const thumb = document.createElement("div");
   thumb.className = "thumb";

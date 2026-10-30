@@ -443,7 +443,8 @@ main {
 }
 .item.off .thumb,
 .item.off .row,
-.item.off .desc {
+.item.off .desc,
+.item.off .menu-price {
   opacity: 0.55;
 }
 .thumb {
@@ -466,6 +467,9 @@ main {
 .info {
   min-width: 0;
   flex: 1;
+  align-self: stretch; /* prend toute la hauteur de la card */
+  display: flex;
+  flex-direction: column;
 }
 .row {
   display: flex;
@@ -490,6 +494,22 @@ main {
   color: var(--muted);
   margin-top: 0.3rem;
 }
+.desc:not(:last-child) {
+  margin-bottom: 0.75rem;
+}
+/* Prix du menu : toujours en bas de la card (même position sur toute la ligne) */
+.menu-price {
+  align-self: flex-start;
+  margin-top: auto;
+  padding: 0.25rem 0.85rem;
+  border: 1px solid var(--saffron);
+  border-radius: 999px;
+  color: var(--saffron);
+  font-size: clamp(0.88rem, 0.84rem + 0.2vw, 1rem);
+  font-weight: 700;
+  line-height: 1.4;
+  background: rgba(242, 169, 0, 0.1);
+}
 /* Offres en tête de carte */
 .item.offer {
   box-shadow:
@@ -497,6 +517,7 @@ main {
     0 10px 40px rgba(242, 169, 0, 0.28);
 }
 .offer-tag {
+  align-self: flex-start;
   display: inline-block;
   margin-bottom: 0.4rem;
   padding: 0.12rem 0.65rem;
@@ -517,9 +538,13 @@ main {
   text-shadow: none;
 }
 .soldout {
-  font-size: 0.85rem;
+  margin-top: 0.1rem;
+  font-size: 0.9rem;
   color: var(--chili-soft);
   font-weight: 600;
+}
+.soldout:not(:last-child) {
+  margin-bottom: 0.75rem;
 }
 
 /* ---------- Pied de page ---------- */
