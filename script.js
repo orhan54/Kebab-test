@@ -30,6 +30,7 @@ const CONFIG = {
   HORAIRES_URL: "",
   TIMEZONE: "Europe/Paris",
   BIENTOT: 30, // minutes avant l'ouverture pour afficher "Ouvre bientôt"
+  BIENTOT_FERME: 30, // minutes avant la fermeture pour afficher "Ferme bientôt"
 };
 
 // ---------- Outils ----------
@@ -569,6 +570,13 @@ function getStatus() {
 
   for (const [start, end] of scheduleFor(dayInfo(now, 0)).ranges) {
     if (now.minutes >= start && now.minutes < end) {
+      // Moins de BIENTOT_FERME minutes avant la fermeture
+      if (end - now.minutes <= CONFIG.BIENTOT_FERME) {
+        return {
+          state: "closing",
+          text: "Ferme bientôt · à " + fmtTime(end),
+        };
+      }
       return {
         state: "open",
         text: "Ouvert maintenant · jusqu'à " + fmtTime(end),
@@ -586,10 +594,13 @@ function getStatus() {
     if (i === 0) {
       return next[0] - now.minutes <= CONFIG.BIENTOT
         ? { state: "soon", text: "Ouvre bientôt · à " + at }
-        : { state: "closed", text: "Fermé · réouvre à " + at };
+        : { state: "closed", text: "Fermé · réouverture à " + at };
     }
     const when = i === 1 ? "demain" : dayInfo(now, i).name;
-    return { state: "closed", text: "Fermé · réouvre " + when + " à " + at };
+    return {
+      state: "closed",
+      text: "Fermé · réouverture " + when + " à " + at,
+    };
   }
   return { state: "closed", text: "Fermé" };
 }
