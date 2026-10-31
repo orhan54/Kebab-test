@@ -22,18 +22,29 @@
   <body>
     <header class="top">
       <a class="logo" href="#">Kebab O'Delices</a>
+
+      <img
+        src="./images/logo-halal.webp"
+        class="hero-halal-logo"
+        alt="Logo Halal"
+      />
+
       <div class="top-right">
-        <nav><a href="#menu">Menu</a><a href="#infos">Infos</a></nav>
-        <!-- Appeler / WhatsApp (sur mobile : barre du bas) -->
+        <nav>
+          <a href="#menu">Menu</a>
+          <a href="#infos">Infos</a>
+        </nav>
+
         <div class="top-actions desktop-only">
           <a class="btn btn-sm btn-call" data-tel href="#">
             <svg viewBox="0 0 24 24" aria-hidden="true">
               <path
-                d="M6.62 10.79a15.05 15.05 0 006.59 6.59l2.2-2.2a1 1 0 011.02-.24c1.12.37 2.33.57 3.57.57a1 1 0 011 1V20a1 1 0 01-1 1A17 17 0 013 4a1 1 0 011-1h3.5a1 1 0 011 1c0 1.25.2 2.45.57 3.57a1 1 0 01-.25 1.02l-2.2 2.2z"
+                d="M6.62 10.79a15.05 15.05 0 006.59 6.59l2.2-2.2a1 1 0 011.02-.24c1.12.37 2.33.57 3.57.57a1 1 0 011 1V20a1 1 0 01-1 1A17 17 0 013 4a17 17 0 011-1h3.5a1 1 0 011 1c0 1.25.2 2.45.57 3.57a1 1 0 01-.25 1.02l-2.2 2.2z"
               />
             </svg>
             Appeler
           </a>
+
           <a
             class="btn btn-sm btn-wa"
             data-wa
@@ -53,9 +64,19 @@
     </header>
 
     <section class="hero">
+      <img
+        src="./images/logo-du-kebab.jpg"
+        class="hero-watermark"
+        alt=""
+        aria-hidden="true"
+      />
+
       <h1>Le kebab O'Delices,<br />saveurs rapides<br />et délicieuses.</h1>
+
       <p>Viande fraîche, pain du jour, sauces maison.</p>
+
       <div class="status" id="status" role="status"></div>
+
       <div class="hero-actions">
         <a class="btn" href="#menu">Voir le menu</a>
       </div>
@@ -75,7 +96,6 @@
         46 99 38
       </p>
       <ul class="hours" id="hours" aria-label="Horaires d'ouverture"></ul>
-
       <div class="info-blocks">
         <section class="info-block">
           <h3>Paiement</h3>
@@ -95,7 +115,6 @@
       </div>
     </footer>
 
-    <!-- Barre d'appel mobile -->
     <div class="callbar" role="group" aria-label="Commander">
       <a class="btn btn-call" data-tel href="#">
         <svg viewBox="0 0 24 24" aria-hidden="true">
@@ -115,7 +134,6 @@
       </a>
     </div>
 
-    <!-- Pop-up offre -->
     <dialog id="popup" aria-labelledby="popup-title">
       <button class="close" id="popup-close" aria-label="Fermer">×</button>
       <div class="popup-img" id="popup-img"></div>
@@ -127,7 +145,6 @@
         <a class="btn" href="#menu" id="popup-cta">Voir le menu</a>
       </div>
     </dialog>
-
     <script src="script.js"></script>
   </body>
 </html>

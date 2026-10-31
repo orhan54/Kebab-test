@@ -26,6 +26,7 @@
 
   /* Marge latérale fluide */
   --gutter: clamp(1rem, 4vw, 3rem);
+
   /* Largeur max du contenu */
   --wrap: 84rem;
 }
@@ -36,22 +37,22 @@
 *::after {
   box-sizing: border-box;
 }
+
 * {
   margin: 0;
 }
 
 html {
-  /* 16px sur mobile, environ 20px sur grand écran */
   font-size: clamp(1rem, 0.5vw + 0.69rem, 1.3rem);
   scroll-behavior: smooth;
-  /* Les ancres ne passent pas sous les barres collantes */
   scroll-padding-top: calc(var(--top-h, 3.5rem) + var(--nav-h, 0px) + 0.75rem);
   background: var(--bg-deep);
   -webkit-text-size-adjust: 100%;
   text-size-adjust: 100%;
 }
+
 body {
-  min-width: 20rem; /* 320px minimum */
+  min-width: 20rem;
   font-family: "Bricolage Grotesque", system-ui, sans-serif;
   background: var(--bg);
   color: var(--ink);
@@ -59,21 +60,26 @@ body {
   -webkit-font-smoothing: antialiased;
   overflow-wrap: break-word;
 }
+
 img {
   max-width: 100%;
   height: auto;
 }
+
 a {
   color: inherit;
 }
+
 ::selection {
   background: var(--saffron);
   color: var(--bg-deep);
 }
+
 :focus-visible {
   outline: 3px solid var(--saffron);
   outline-offset: 2px;
 }
+
 /* Texte lisible uniquement par les lecteurs d'écran */
 .sr-only {
   position: absolute;
@@ -89,17 +95,19 @@ a {
   width: 1.2em;
   height: 1.2em;
   flex: none;
-  fill: currentColor;
 }
+
 .btn-wa {
   background: #25d366;
   color: #06240f;
   box-shadow: 0 6px 24px rgba(37, 211, 102, 0.25);
 }
+
 .btn-wa:hover {
   background: #3ee37c;
   box-shadow: 0 8px 36px rgba(37, 211, 102, 0.5);
 }
+
 /* Appeler : bouton avec contour uniquement */
 .contact-actions .btn-call {
   background: transparent;
@@ -107,11 +115,13 @@ a {
   border: 2px solid var(--saffron);
   box-shadow: none;
 }
+
 .contact-actions .btn-call:hover {
   background: rgba(242, 169, 0, 0.14);
   box-shadow: 0 8px 30px rgba(242, 169, 0, 0.25);
 }
-/* Bouton désactivé (numéro manquant) */
+
+/* Bouton désactivé */
 .btn[aria-disabled="true"] {
   opacity: 0.55;
   cursor: not-allowed;
@@ -133,12 +143,14 @@ a {
   backdrop-filter: blur(10px);
   border-top: 1px solid var(--line);
 }
+
 .callbar .btn {
   flex: 1;
   min-height: 3rem;
   padding-inline: 0.5rem;
 }
-/* Boutons du pied de page (affichés sur mobile, voir plus bas) */
+
+/* Boutons du pied de page */
 .contact-actions {
   display: none;
   flex-wrap: wrap;
@@ -147,63 +159,108 @@ a {
   margin-top: 1.5rem;
 }
 
-/* ---------- Barre du haut ---------- */
+/* ---------- BARRE DU HAUT - HEADER RESPONSIVE ---------- */
+
 .top {
   position: sticky;
   top: 0;
   z-index: 5;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
+
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
   align-items: center;
-  column-gap: 1rem;
-  /* safe-area : évite l'encoche en mode paysage */
+
+  gap: 0.5rem;
+
   padding: 0.35rem max(var(--gutter), env(safe-area-inset-right)) 0.35rem
     max(var(--gutter), env(safe-area-inset-left));
+
   background: rgba(12, 7, 5, 0.88);
   -webkit-backdrop-filter: blur(10px);
   backdrop-filter: blur(10px);
+
   border-bottom: 1px solid var(--line);
 }
+
+/* Nom du restaurant */
 .logo {
   display: inline-flex;
   align-items: center;
+  justify-self: start;
+
   min-height: 2.75rem;
+
   font-weight: 800;
-  font-size: clamp(1.1rem, 0.9rem + 0.6vw, 1.45rem);
+  font-size: clamp(0.9rem, 0.9rem + 0.6vw, 1.45rem);
   letter-spacing: -0.01em;
+
   text-decoration: none;
   color: var(--saffron);
+  white-space: nowrap;
 }
+
+/* Logo halal parfaitement centré */
+.top .hero-halal-logo {
+  display: block;
+  position: static;
+  justify-self: center;
+
+  width: clamp(85px, 8vw, 110px);
+  height: auto;
+  max-height: 90px;
+
+  object-fit: contain;
+  margin: 0;
+  z-index: 1;
+  background-color: transparent !important;
+}
+
+/* Navigation et boutons */
 .top-right {
   display: flex;
   align-items: center;
-  flex-wrap: wrap;
+  justify-self: end;
+
+  flex-wrap: nowrap;
   justify-content: flex-end;
-  gap: 0.25rem clamp(0.75rem, 2vw, 1.75rem);
+
+  gap: clamp(0.25rem, 1vw, 1rem);
+  min-width: 0;
 }
+
 .top-actions {
   display: flex;
+  flex-wrap: nowrap;
   gap: 0.5rem;
 }
+
 .btn-sm {
   min-height: 2.5rem;
   padding: 0.35rem 1.1rem;
   font-size: 0.95rem;
 }
+
+/* Navigation */
 .top nav {
   display: flex;
-  gap: clamp(0.25rem, 2vw, 1.5rem);
+  flex-wrap: nowrap;
+  gap: clamp(0.1rem, 1vw, 1rem);
 }
+
 .top nav a {
   display: inline-flex;
   align-items: center;
-  min-height: 2.75rem; /* zone tactile de 44px minimum */
-  padding-inline: 0.6rem;
+
+  min-height: 2.75rem;
+  padding-inline: clamp(0.25rem, 0.6vw, 0.6rem);
+
   text-decoration: none;
   color: var(--muted);
+  white-space: nowrap;
+
   transition: color 0.2s;
 }
+
 .top nav a:hover {
   color: var(--saffron);
 }
@@ -211,8 +268,10 @@ a {
 /* ---------- Hero ---------- */
 .hero {
   color: var(--ink);
+
   padding: clamp(3rem, 8vw, 7rem) max(var(--gutter), env(safe-area-inset-right))
     clamp(3.5rem, 9vw, 8rem) max(var(--gutter), env(safe-area-inset-left));
+
   background:
     radial-gradient(
       60rem 28rem at 88% -10%,
@@ -225,33 +284,40 @@ a {
       transparent 70%
     ),
     var(--bg-deep);
+
   border-bottom: 1px solid var(--line);
 }
+
 .hero > * {
   max-width: var(--wrap);
   margin-inline: auto;
 }
+
 .hero h1 {
-  /* Sur petit mobile, la taille suit la largeur pour garder la 1re ligne sur une seule ligne */
   font-size: min(
     clamp(2.25rem, 1.2rem + 6.2vw, 6.5rem),
     calc((100vw - 2 * var(--gutter)) / 8.6)
   );
+
   font-weight: 800;
   line-height: 1.02;
   letter-spacing: -0.03em;
   text-wrap: balance;
   text-shadow: 0 4px 40px rgba(242, 169, 0, 0.25);
 }
+
 .hero p {
   margin-top: 1.1rem;
   margin-right: auto;
-  /* Aligné avec le titre */
   margin-left: max(0px, calc((100% - var(--wrap)) / 2));
+
   max-width: 40rem;
+
   font-size: clamp(1.05rem, 0.95rem + 0.5vw, 1.5rem);
   color: var(--muted);
 }
+
+/* ---------- Actions du Hero ---------- */
 .hero-actions {
   display: flex;
   flex-wrap: wrap;
@@ -266,21 +332,26 @@ a {
   max-width: 100%;
   align-items: center;
   gap: 0.6rem;
+
   margin-top: 1.5rem;
   margin-right: auto;
   margin-left: max(0px, calc((100% - var(--wrap)) / 2));
+
   padding: 0.45rem 1rem;
+
   border: 1px solid var(--line);
   border-radius: 999px;
+
   background: rgba(12, 7, 5, 0.55);
+
   font-weight: 600;
   font-size: clamp(0.95rem, 0.9rem + 0.2vw, 1.1rem);
 }
-/* Masqué tant que le JS n'a pas rempli le statut */
+
 .status:empty {
   display: none !important;
 }
-/* Pastille lumineuse, de la couleur du texte */
+
 .status .dot {
   flex: none;
   width: 0.7rem;
@@ -289,34 +360,39 @@ a {
   background: currentColor;
   box-shadow: 0 0 10px currentColor;
 }
-/* Ouvert : vert */
+
+/* Ouvert */
 .status.open {
   color: #3ddc84;
   border-color: rgba(61, 220, 132, 0.45);
 }
-/* Ouvre bientôt : safran */
+
+/* Ouvre bientôt */
 .status.soon {
   color: var(--saffron);
   border-color: rgba(242, 169, 0, 0.5);
 }
-/* Ferme bientôt : orange */
+
+/* Ferme bientôt */
 .status.closing {
   color: var(--closing);
   border-color: rgba(255, 138, 61, 0.5);
 }
-/* Fermé : rouge, pastille fixe */
+
+/* Fermé */
 .status.closed {
   color: var(--chili-soft);
   border-color: rgba(255, 122, 99, 0.45);
 }
 
-/* Animations de la pastille : onde douce (ouvert), clignotement (transitions) */
+/* Animations */
 @keyframes pulse {
   0% {
     box-shadow:
       0 0 0 0 currentColor,
       0 0 10px currentColor;
   }
+
   70%,
   100% {
     box-shadow:
@@ -324,14 +400,17 @@ a {
       0 0 10px currentColor;
   }
 }
+
 @keyframes blink {
   50% {
     opacity: 0.25;
   }
 }
+
 .status.open .dot {
   animation: pulse 2s ease-out infinite;
 }
+
 .status.soon .dot,
 .status.closing .dot {
   animation: blink 1s ease-in-out infinite;
@@ -343,76 +422,100 @@ a {
   align-items: center;
   justify-content: center;
   gap: 0.55rem;
+
   min-height: 2.75rem;
   padding: 0.8rem 1.8rem;
+
   border-radius: 999px;
   border: 0;
+
   cursor: pointer;
+
   background: var(--saffron);
   color: #1c1208;
+
   font: inherit;
   font-weight: 700;
   text-align: center;
   text-decoration: none;
+
   box-shadow: 0 6px 24px rgba(242, 169, 0, 0.25);
+
   transition:
     background 0.2s,
     box-shadow 0.25s;
 }
+
 .btn:hover {
   background: var(--saffron-hot);
   box-shadow: 0 8px 36px rgba(242, 169, 0, 0.55);
 }
 
-/* ---------- Barre des catégories (collante sous le header) ---------- */
+/* ---------- Barre des catégories ---------- */
 .catnav {
   position: sticky;
   top: var(--top-h, 3.5rem);
   z-index: 4;
+
   display: flex;
   gap: 0.6rem;
+
   overflow-x: auto;
   overscroll-behavior-x: contain;
-  scrollbar-width: none; /* Firefox */
+  scrollbar-width: none;
+
   padding: 0.6rem
     max(
       var(--gutter),
       env(safe-area-inset-right),
       calc((100% - var(--wrap)) / 2 + var(--gutter))
     );
+
   background: rgba(12, 7, 5, 0.92);
+
   -webkit-backdrop-filter: blur(10px);
   backdrop-filter: blur(10px);
+
   border-bottom: 1px solid var(--line);
 }
+
 .catnav::-webkit-scrollbar {
   display: none;
 }
+
 .catnav a {
   flex: none;
+
   display: inline-flex;
   align-items: center;
-  min-height: 2.75rem; /* zone tactile de 44px minimum */
+
+  min-height: 2.75rem;
   padding-inline: 1.15rem;
+
   border: 1px solid var(--line);
   border-radius: 999px;
+
   background: var(--card);
   color: var(--ink);
+
   font-weight: 600;
   text-decoration: none;
   white-space: nowrap;
+
   transition:
     background 0.2s,
     color 0.2s,
     border-color 0.2s;
 }
-/* Bouton des offres : dégradé rouge/orange */
+
+/* Bouton des offres */
 .catnav a.hot {
   background: linear-gradient(90deg, var(--chili), #e8590c);
   border-color: transparent;
   color: #fff;
 }
-/* Catégorie visible à l'écran */
+
+/* Catégorie visible */
 .catnav a.on {
   background: var(--saffron);
   border-color: var(--saffron);
@@ -423,9 +526,11 @@ a {
 main {
   max-width: var(--wrap);
   margin: 0 auto;
+
   padding: clamp(2.5rem, 5vw, 5rem)
     max(var(--gutter), env(safe-area-inset-right)) clamp(2.5rem, 5vw, 5rem)
     max(var(--gutter), env(safe-area-inset-left));
+
   background: radial-gradient(
       40rem 22rem at 50% 0%,
       rgba(214, 47, 31, 0.12),
@@ -433,105 +538,136 @@ main {
     )
     no-repeat;
 }
+
 .state {
   color: var(--muted);
   text-align: center;
   padding: 2rem 0;
 }
+
 .cat {
   margin-bottom: clamp(2.5rem, 5vw, 4.5rem);
 }
-/* Titre de catégorie avec trait dégradé */
+
+/* Titre de catégorie */
 .cat h3 {
   position: relative;
+
   font-size: clamp(1.6rem, 1.1rem + 1.8vw, 2.6rem);
   font-weight: 800;
   line-height: 1.15;
   letter-spacing: -0.02em;
+
   padding-bottom: 0.7rem;
   margin-bottom: clamp(1rem, 2vw, 1.75rem);
+
   border-bottom: 1px solid var(--line);
 }
+
 .cat h3::after {
   content: "";
   position: absolute;
   left: 0;
   bottom: -1px;
+
   width: 4.5rem;
   height: 4px;
+
   background: linear-gradient(90deg, var(--chili), var(--saffron));
   border-radius: 3px;
 }
 
-/* Grille : 1 colonne sur mobile, 2 sur tablette, 3 ou plus sur PC */
+/* Grille */
 .items {
   list-style: none;
   padding: 0;
+
   display: grid;
   gap: clamp(1rem, 2vw, 1.75rem);
+
   grid-template-columns: repeat(auto-fill, minmax(min(100%, 22rem), 1fr));
 }
-/* Plat disponible : contour safran */
+
+/* Plat disponible */
 .item {
   display: flex;
   align-items: flex-start;
   gap: clamp(0.9rem, 1.6vw, 1.4rem);
+
   background: var(--card);
   border: 1px solid var(--saffron);
   border-radius: 1rem;
+
   padding: clamp(0.85rem, 1.5vw, 1.6rem);
+
   box-shadow:
     0 0 0 1px rgba(242, 169, 0, 0.25),
     0 8px 30px rgba(242, 169, 0, 0.15);
 }
-/* Plat indisponible : contour rouge, contenu atténué */
+
+/* Plat indisponible */
 .item.off {
   border-color: var(--chili);
+
   box-shadow:
     0 0 0 1px rgba(214, 47, 31, 0.3),
     0 8px 30px rgba(214, 47, 31, 0.18);
 }
+
 .item.off .thumb,
 .item.off .row,
 .item.off .desc,
 .item.off .menu-price {
   opacity: 0.55;
 }
+
 .thumb {
   flex: none;
+
   width: clamp(5.25rem, 7vw + 3rem, 10rem);
   aspect-ratio: 1;
+
   border-radius: 0.75rem;
   overflow: hidden;
+
   background: #3a2a21;
+
   display: grid;
   place-items: center;
+
   font-size: clamp(2.4rem, 4vw, 3.4rem);
 }
+
 .thumb img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   display: block;
 }
+
 .info {
   min-width: 0;
   flex: 1;
-  align-self: stretch; /* occupe toute la hauteur de la card */
+  align-self: stretch;
+
   display: flex;
   flex-direction: column;
 }
+
 .row {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
   align-items: baseline;
   column-gap: 0.75rem;
+
   font-weight: 700;
   font-size: clamp(1.05rem, 0.95rem + 0.4vw, 1.3rem);
   line-height: 1.3;
+
   color: var(--ink);
 }
+
 .price {
   color: var(--saffron);
   font-weight: 800;
@@ -539,60 +675,80 @@ main {
   white-space: nowrap;
   text-shadow: 0 0 18px rgba(242, 169, 0, 0.35);
 }
+
 .desc {
   font-size: clamp(0.92rem, 0.88rem + 0.2vw, 1.05rem);
   color: var(--muted);
   margin-top: 0.3rem;
 }
+
 .desc:not(:last-child) {
   margin-bottom: 0.75rem;
 }
-/* Prix du menu : collé en bas de la card, à la même hauteur sur toute la ligne */
+
+/* Prix du menu */
 .menu-price {
   align-self: flex-start;
   margin-top: auto;
+
   padding: 0.25rem 0.85rem;
+
   border: 1px solid var(--saffron);
   border-radius: 999px;
+
   color: var(--saffron);
+
   font-size: clamp(0.88rem, 0.84rem + 0.2vw, 1rem);
   font-weight: 700;
   line-height: 1.4;
+
   background: rgba(242, 169, 0, 0.1);
 }
-/* Offres : halo plus marqué */
+
+/* Offres */
 .item.offer {
   box-shadow:
     0 0 0 1px rgba(242, 169, 0, 0.45),
     0 10px 40px rgba(242, 169, 0, 0.28);
 }
+
 .offer-tag {
   align-self: flex-start;
   display: inline-block;
+
   margin-bottom: 0.4rem;
   padding: 0.12rem 0.65rem;
+
   border-radius: 999px;
+
   background: var(--chili);
   color: #fff;
+
   font-size: 0.78rem;
   font-weight: 600;
   line-height: 1.4;
 }
+
 /* Ancien prix barré */
 .was {
   margin-right: 0.15rem;
+
   color: var(--muted);
   font-weight: 400;
   font-size: 0.85em;
+
   text-decoration: line-through;
   text-shadow: none;
 }
+
 .soldout {
   margin-top: 0.1rem;
+
   font-size: 0.9rem;
   color: var(--chili-soft);
   font-weight: 600;
 }
+
 .soldout:not(:last-child) {
   margin-bottom: 0.75rem;
 }
@@ -602,13 +758,16 @@ footer {
   background: var(--bg-deep);
   border-top: 1px solid var(--line);
   color: var(--muted);
+
   padding: clamp(2.5rem, 5vw, 4rem)
     max(var(--gutter), env(safe-area-inset-right))
     calc(clamp(2.5rem, 5vw, 4rem) + env(safe-area-inset-bottom))
     max(var(--gutter), env(safe-area-inset-left));
+
   text-align: center;
   line-height: 1.7;
 }
+
 footer h2 {
   color: var(--ink);
   font-size: clamp(1.4rem, 1rem + 1.2vw, 2rem);
@@ -620,55 +779,69 @@ footer h2 {
   list-style: none;
   margin: 1.75rem auto 0;
   padding: 0.25rem 1.25rem;
+
   max-width: 32rem;
   text-align: left;
+
   background: var(--card);
   border: 1px solid var(--line);
   border-radius: 1rem;
+
   box-shadow:
     0 10px 30px rgba(0, 0, 0, 0.35),
     inset 0 1px 0 rgba(255, 255, 255, 0.05);
 }
+
 .hours li {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
   gap: 0.35rem 1rem;
+
   padding: 0.95rem 0;
   border-bottom: 1px solid var(--line);
 }
+
 .hours li:last-child {
   border-bottom: 0;
 }
+
 .hours .day {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   gap: 0.4rem 0.6rem;
+
   font-weight: 700;
   color: var(--ink);
 }
+
 .hours .times {
   color: var(--muted);
   font-variant-numeric: tabular-nums;
 }
+
 .hours li.today .times {
   color: var(--saffron);
   font-weight: 700;
 }
+
 /* Pastilles à côté du jour */
 .tag {
   padding: 0.12rem 0.6rem;
   border-radius: 999px;
+
   font-size: 0.78rem;
   font-weight: 600;
   line-height: 1.4;
 }
+
 .tag-today {
   background: var(--saffron);
   color: #1c1208;
 }
+
 .tag-note {
   border: 1px solid rgba(255, 122, 99, 0.55);
   color: var(--chili-soft);
@@ -679,115 +852,151 @@ dialog {
   border: 1px solid var(--saffron);
   border-radius: 1.25rem;
   padding: 0;
+
   width: min(92vw, 28rem);
+
   max-height: 92vh;
   max-height: 92dvh;
+
   overflow: auto;
   overscroll-behavior: contain;
+
   background: var(--card);
   color: var(--ink);
+
   margin: auto;
+
   box-shadow:
     0 30px 80px rgba(0, 0, 0, 0.6),
     0 0 0 1px rgba(242, 169, 0, 0.25),
     0 0 40px rgba(242, 169, 0, 0.15);
 }
+
 dialog::backdrop {
   background: rgba(8, 5, 4, 0.78);
   -webkit-backdrop-filter: blur(3px);
   backdrop-filter: blur(3px);
 }
+
 dialog[open] {
   animation: pop 0.25s ease-out;
 }
+
 @keyframes pop {
   from {
     transform: scale(0.92);
     opacity: 0;
   }
 }
+
 .popup-img {
   height: clamp(9rem, 32vh, 16rem);
   height: clamp(9rem, 32dvh, 16rem);
+
   position: relative;
-  overflow: hidden; /* l'image ne déborde jamais sur le texte */
+  overflow: hidden;
+
   background: #3a2a21;
+
   display: grid;
   place-items: center;
+
   font-size: 4rem;
 }
+
 /* Fondu vers la couleur de la card */
 .popup-img::after {
   content: "";
   position: absolute;
   inset: 0;
+
   background: linear-gradient(to bottom, transparent 55%, var(--card));
+
   pointer-events: none;
 }
-/* L'image remplit la zone sans influencer sa hauteur */
+
 .popup-img img {
   position: absolute;
   inset: 0;
+
   width: 100%;
   height: 100%;
   max-width: none;
+
   object-fit: cover;
   display: block;
 }
+
 .popup-body {
   position: relative;
   padding: 1.25rem 1.5rem 1.6rem;
   text-align: center;
 }
+
 .badge {
   display: inline-block;
+
   background: var(--chili);
   color: #fff;
+
   font-size: 0.9rem;
   font-weight: 600;
+
   padding: 0.2rem 0.8rem;
   border-radius: 999px;
+
   margin-bottom: 0.6rem;
 }
+
 .popup-body h2 {
   font-size: clamp(1.5rem, 1.2rem + 1vw, 2rem);
   font-weight: 800;
   line-height: 1.15;
   letter-spacing: -0.02em;
 }
+
 .popup-body p {
   color: #eadfd2;
   font-size: 1.05rem;
   line-height: 1.6;
   margin-top: 0.5rem;
 }
-/* Le badge garde son style, malgré la règle .popup-body p */
+
+/* Le badge garde son style */
 .popup-body .badge {
   color: #fff;
   font-size: 0.9rem;
   line-height: 1.4;
   margin-top: 0;
 }
+
 .popup-price {
   color: var(--saffron) !important;
   font-weight: 800;
   font-size: 1.5rem;
   margin-bottom: 1.1rem;
 }
+
 .close {
   position: absolute;
   top: 0.6rem;
   right: 0.6rem;
-  width: 2.75rem; /* zone tactile de 44px minimum */
+
+  width: 2.75rem;
   height: 2.75rem;
+
   border: 0;
   border-radius: 50%;
+
   background: rgba(12, 7, 5, 0.75);
   color: var(--ink);
+
   font-size: 1.6rem;
   line-height: 1;
+
   cursor: pointer;
   z-index: 2;
+
   transition: background 0.2s;
 }
 
@@ -796,6 +1005,7 @@ dialog[open] {
   .close:hover {
     background: var(--chili);
   }
+
   .catnav a:not(.on):hover {
     border-color: var(--saffron);
     color: var(--saffron);
@@ -808,39 +1018,80 @@ dialog[open] {
   .item {
     flex-direction: column;
   }
+
   .thumb {
     width: min(100%, 14rem);
     aspect-ratio: 1;
     align-self: center;
   }
+
   .info {
     width: 100%;
   }
+
   .top nav a {
-    padding-inline: 0.4rem;
+    padding-inline: 0.25rem;
   }
 }
 
 /* ---------- Mobile et petite tablette (moins de 48rem) ---------- */
 @media (max-width: 47.99rem) {
-  /* Barre d'appel en bas, boutons de contact dans le pied de page */
+  /* Barre d'appel en bas */
   .callbar {
     display: flex;
   }
+
   .contact-actions {
     display: flex;
   }
+
   .contact-actions .btn {
     flex: 1 1 12rem;
   }
+
   .desktop-only {
     display: none !important;
   }
-  /* Espace pour ne pas cacher le contenu derrière la barre fixe */
+
+  /* Espace pour la barre fixe */
   footer {
     padding-bottom: calc(
       clamp(2.5rem, 5vw, 4rem) + 4.75rem + env(safe-area-inset-bottom)
     );
+  }
+}
+
+/* ---------- Header mobile S et M ---------- */
+@media (max-width: 30rem) {
+  .top {
+    gap: 0.2rem;
+    padding-inline: 0.65rem;
+  }
+
+  .logo {
+    font-size: clamp(0.75rem, 3.2vw, 0.95rem);
+  }
+
+  .top .hero-halal-logo {
+    width: 68px;
+    max-height: 68px;
+  }
+
+  .top nav {
+    gap: 0;
+  }
+
+  .top nav a {
+    padding-inline: 0.3rem;
+    font-size: 0.85rem;
+  }
+
+  .hero-actions .btn {
+    flex: 1 1 100%;
+  }
+
+  .popup-body {
+    padding-inline: 1.1rem;
   }
 }
 
@@ -851,21 +1102,12 @@ dialog[open] {
   }
 }
 
-/* ---------- Mobile (30rem et moins) ---------- */
-@media (max-width: 30rem) {
-  .hero-actions .btn {
-    flex: 1 1 100%;
-  }
-  .popup-body {
-    padding-inline: 1.1rem;
-  }
-}
-
-/* ---------- Téléphone en paysage (peu de hauteur) ---------- */
+/* ---------- Téléphone en paysage ---------- */
 @media (max-height: 30rem) and (orientation: landscape) {
   .hero {
     padding-block: 2rem 2.5rem;
   }
+
   .popup-img {
     height: 7rem;
   }
@@ -883,13 +1125,228 @@ dialog[open] {
   html {
     scroll-behavior: auto;
   }
+
   dialog[open],
   .status .dot {
     animation: none;
   }
+
   *,
   *::before,
   *::after {
     transition: none !important;
+  }
+}
+
+/* ---------- Filigrane du logo dans le Hero ---------- */
+.hero {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  text-align: center;
+}
+
+/* Logo en arrière-plan */
+.hero .hero-watermark {
+  position: absolute;
+  z-index: 0;
+
+  top: 50%;
+  left: 50%;
+
+  transform: translate(-50%, -50%);
+
+  width: clamp(230px, 38vw, 430px);
+  max-width: none;
+  height: auto;
+
+  margin: 0;
+
+  opacity: 0.12;
+  filter: blur(3px) saturate(0.75);
+  mix-blend-mode: screen;
+
+  object-fit: contain;
+
+  pointer-events: none;
+  user-select: none;
+}
+
+/* Tous les éléments du Hero restent nets */
+.hero > *:not(.hero-watermark) {
+  position: relative;
+  z-index: 1;
+
+  max-width: var(--wrap);
+  margin-inline: auto;
+
+  text-align: center;
+}
+
+.hero h1 {
+  text-align: center;
+}
+
+.hero p {
+  margin: 1.1rem auto 0;
+  max-width: 40rem;
+  text-align: center;
+}
+
+.hero .status {
+  margin: 1.5rem auto 0;
+}
+
+.hero-actions {
+  justify-content: center;
+}
+
+/* Filigrane sur mobile */
+@media (max-width: 47.99rem) {
+  .hero .hero-watermark {
+    width: min(76vw, 320px);
+    opacity: 0.1;
+    filter: blur(2.5px) saturate(0.7);
+  }
+}
+
+/* ---------- Ajustements responsive du header ---------- */
+
+/* ---------- Header mobile S et M ---------- */
+@media (max-width: 480px) {
+  .top {
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+    gap: 0.2rem;
+    padding-inline: 0.65rem;
+  }
+
+  .logo {
+    font-size: clamp(0.75rem, 3.2vw, 0.95rem);
+  }
+
+  .top .hero-halal-logo {
+    width: 68px;
+    max-height: 68px;
+  }
+
+  .top-right {
+    grid-column: 3;
+    justify-self: end;
+    gap: 0.2rem;
+  }
+
+  .top nav {
+    gap: 0;
+  }
+
+  .top nav a {
+    padding-inline: 0.3rem;
+    font-size: 0.85rem;
+  }
+
+  .callbar {
+    display: flex;
+  }
+
+  .desktop-only {
+    display: none !important;
+  }
+
+  .contact-actions {
+    display: flex;
+  }
+
+  footer {
+    padding-bottom: calc(
+      clamp(2.5rem, 5vw, 4rem) + 4.75rem + env(safe-area-inset-bottom)
+    );
+  }
+}
+
+/* ---------- Header mobile L et tablette ---------- */
+@media (min-width: 481px) {
+  .top {
+    grid-template-columns: max-content auto minmax(0, 1fr);
+    gap: 0.5rem;
+    padding-inline: var(--gutter);
+  }
+
+  .logo {
+    font-size: clamp(0.9rem, 0.9rem + 0.6vw, 1.45rem);
+  }
+
+  .top .hero-halal-logo {
+    width: clamp(80px, 8vw, 100px);
+    max-height: 90px;
+  }
+
+  .top-right {
+    grid-column: 3;
+    justify-self: end;
+  }
+}
+
+/* ---------- Tablette ---------- */
+@media (min-width: 768px) and (max-width: 1024px) {
+  .top {
+    gap: 0.35rem;
+    padding-inline: 1rem;
+  }
+
+  .logo {
+    font-size: 1rem;
+  }
+
+  .top .hero-halal-logo {
+    width: 90px;
+    max-height: 90px;
+  }
+
+  .top-right {
+    gap: 0.4rem;
+  }
+
+  .top nav {
+    gap: 0.1rem;
+  }
+
+  .top nav a {
+    padding-inline: 0.35rem;
+  }
+
+  .btn-sm {
+    padding-inline: 0.65rem;
+    font-size: 0.85rem;
+  }
+
+  .top-actions {
+    gap: 0.35rem;
+  }
+}
+
+/* ---------- Tablette et ordinateur ---------- */
+@media (min-width: 768px) {
+  .callbar {
+    display: none !important;
+  }
+
+  .desktop-only {
+    display: flex !important;
+  }
+
+  .contact-actions {
+    display: none;
+  }
+
+  footer {
+    padding-bottom: clamp(2.5rem, 5vw, 4rem);
+  }
+}
+
+/* ---------- Grands écrans et 4K ---------- */
+@media (min-width: 1025px) {
+  .top .hero-halal-logo {
+    width: clamp(100px, 6vw, 140px);
+    max-height: 130px;
   }
 }
