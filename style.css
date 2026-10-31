@@ -1162,9 +1162,11 @@ dialog[open] {
 
   margin: 0;
 
-  opacity: 0.12;
-  filter: blur(3px) saturate(0.75);
+  /* Logo légèrement plus lumineux avec des coins arrondis */
+  opacity: 0.18;
+  filter: blur(1.5px) saturate(1);
   mix-blend-mode: screen;
+  border-radius: 1.5rem;
 
   object-fit: contain;
 
@@ -1204,9 +1206,10 @@ dialog[open] {
 /* Filigrane sur mobile */
 @media (max-width: 47.99rem) {
   .hero .hero-watermark {
-    width: min(76vw, 320px);
-    opacity: 0.1;
-    filter: blur(2.5px) saturate(0.7);
+    width: min(82vw, 340px);
+    opacity: 0.17;
+    filter: blur(1.3px) saturate(0.95);
+    border-radius: 1.5rem;
   }
 }
 
